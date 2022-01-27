@@ -1,0 +1,39 @@
+#NEXUS
+[R-package APE, Wed Dec 29 10:12:39 2021]
+
+BEGIN TAXA;
+	DIMENSIONS NTAX = 13;
+	TAXLABELS
+		bope
+		botr
+		boim
+		bobi
+		bova
+		boaf
+		bogr
+		boru
+		bopn
+		bofe
+		boci
+		bobo
+		boau
+	;
+END;
+BEGIN TREES;
+	TRANSLATE
+		1	bope,
+		2	botr,
+		3	boim,
+		4	bobi,
+		5	bova,
+		6	boaf,
+		7	bogr,
+		8	boru,
+		9	bopn,
+		10	bofe,
+		11	boci,
+		12	bobo,
+		13	boau
+	;
+	TREE * UNTITLED = [&R] ((((((1:0.256017,((2:0.123715,3:0.110552)1.00:0.091965,4:0.180668)1.00:0.048681)0.86:0.010306,5:0.210302)1.00:0.101187,6:0.471414)1.00:0.07832,(7:0.415988,8:0.294477)0.99:0.107706)1.00:0.050826,(((9:0.179241,10:0.116404)1.00:0.289312,11:0.664234)1.00:0.096583,12:0.489099)1.00:0.062034)0.93:0.205122,13:0.596647)0.77;
+END;
