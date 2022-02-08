@@ -245,17 +245,24 @@ str(bb.phy)
 
 # calculate phylogenetic signals for traits
 # Blomberg's K (Blomberg, Garland, and Ives 2003)
-phylosig(p4, t3$qbl_var, method = "K")
-phylosig(p4, t3$mbl_var, method = "K")
-phylosig(p4, t3$wbl_var, method = "K")
-phylosig(p4, t3$it, method = "K")
-phylosig(p4, t3$rwingl, method = "K")
-phylosig(p4, t3$rheadw, method = "K")
-phylosig(p4, t3$reyel, method = "K")
-phylosig(p4, t3$thairl, method = "K")
-phylosig(p4, t3$bsetael, method = "K")
-phylosig(p4, t3$rbtl, method = "K")
 
+# create an empty dataframe
+physig <- matrix(NA, nrow = 1, ncol = 10)
+colnames(physig) <- c("qbl_var", "mbl_var", "wbl_var", "it", "rwingl", "rheadw", "reyel", "thairl",
+                      "bsetael", "rbtl")
+
+physig[,1] <- phylosig(p4, t3$qbl_var, method = "K")
+physig[,2] <- phylosig(p4, t3$mbl_var, method = "K")
+physig[,3] <- phylosig(p4, t3$wbl_var, method = "K")
+physig[,4] <- phylosig(p4, t3$it, method = "K")
+physig[,5] <- phylosig(p4, t3$rwingl, method = "K")
+physig[,6] <- phylosig(p4, t3$rheadw, method = "K")
+physig[,7] <- phylosig(p4, t3$reyel, method = "K")
+physig[,8] <- phylosig(p4, t3$thairl, method = "K")
+physig[,9] <- phylosig(p4, t3$bsetael, method = "K")
+physig[,10] <- phylosig(p4, t3$rbtl, method = "K")
+
+physig <- as.data.frame(physig)
 
 ################################################################################
 # test randomization code to make sure it is working correctly
@@ -450,7 +457,6 @@ write.csv(npsor, file = "Regional_to_Urban_2Axes/bb_pbeta_sor.csv")
 write.csv(npsig, file = "Regional_to_Urban_2Axes/bb_phylo_signal.csv")
 
 
-
 # load the datasets
 nqbl_var <- read.csv("Regional_to_Urban_2Axes/nqbl_var.csv", row.names=1)
 nmbl_var <- read.csv("Regional_to_Urban_2Axes/nmbl_var.csv", row.names=1)
@@ -477,11 +483,16 @@ nfsim <- read.csv("Regional_to_Urban_2Axes/bb_fbeta_sim.csv", row.names=1)
 nfsne <- read.csv("Regional_to_Urban_2Axes/bb_fbeta_sne.csv", row.names=1)
 nfsor <- read.csv("Regional_to_Urban_2Axes/bb_fbeta_sor.csv", row.names=1)
 
-## Pval and SES: CWM
-#calculate standardized effect sizes (SES) for each trait
-#the effect size is the difference between the observed value and the expected one
+npsim <- read.csv("Regional_to_Urban_2Axes/bb_pbeta_sim.csv", row.names=1)
+npsne <- read.csv("Regional_to_Urban_2Axes/bb_pbeta_sne.csv", row.names=1)
+npsor <- read.csv("Regional_to_Urban_2Axes/bb_pbeta_sor.csv", row.names=1)
+npsig <- read.csv("Regional_to_Urban_2Axes/bb_phylo_signal.csv", row.names=1)
+
+## Pval and SES:
+#calculate standardized effect sizes (SES) for each trait and diversity metric
+#the effect size is the difference between the observed value and the expected/ null values
 #then divide the effect size by the standard deviation of the null distribution to get the standardized effect size
-#allows comparison among sites with different numbers of species
+#this metric allows comparison among sites with different numbers of species
 
 #test different methods with intertegular distance
 #tested and they all work
@@ -497,7 +508,7 @@ nfsor <- read.csv("Regional_to_Urban_2Axes/bb_fbeta_sor.csv", row.names=1)
 #3
 #SES_it.3 <-(cwm.obs$it - apply(nit, MARGIN = 1, mean)) / apply(nit, MARGIN = 1, sd, na.rm=T)
 
-#data.frame(SES_it.1, SES_it.2, SES_it.3) #all three give the same results!
+#data.frame(SES_it.1, SES_it.2, SES_it.3) #all three produced the same results!
 
 #################################################################################################################
 
@@ -850,11 +861,11 @@ SES_setael <- (cwm.obs$bsetael - apply(nbsetael, MARGIN = 1, mean)) / apply(nbse
 SES_setael
 
 boxplot(SES_setael)#zero not on the y scale!
-boxplot(SES_setael, ylim=c(-0.5, 1.2))
+boxplot(SES_setael, ylim=c(-0.5, 1.5))
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 plot(SES_setael, pch = 19, cex = 1.5)
-plot(SES_setael, pch = 19, cex = 1.5, ylim=c(-0.5, 1.2))
+plot(SES_setael, pch = 19, cex = 1.5, ylim=c(-0.5, 1.5))
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 hist(as.matrix(nbsetael), main = "Distribution of expected values - Corbicula Setae Length")
@@ -895,7 +906,7 @@ w.tibial <- wilcox.test(SES_tibial, y = NULL, mu = 0, alternative = c("two.sided
 w.tibial
 
 
-## Diversity Indices##
+## Diversity Indices ##
 
 #Taxonomic diversity
 
@@ -911,7 +922,7 @@ beta.sne <- colMeans(beta.sne)
 beta.t <- data.frame(beta.sor, beta.sim, beta.sne)
 beta.t.m <- as.matrix(t(colMeans(beta.t)))
 
-## taxonomic diveristy - beta sor
+## taxonomic diversity - beta sor
 SES_bsor <- (beta.t$beta.sor - apply(nbsor, MARGIN = 1, mean)) / apply(nbsor, MARGIN = 1, sd, na.rm=T)
 SES_bsor
 
@@ -936,7 +947,7 @@ w.bsor <- wilcox.test(SES_bsor, y = NULL, mu = 0, alternative = c("two.sided"), 
 w.bsor
 
 
-## taxonomic diveristy - beta sim
+## taxonomic diversity - beta sim
 SES_bsim <- (beta.t$beta.sim - apply(nbsim, MARGIN = 1, mean)) / apply(nbsim, MARGIN = 1, sd, na.rm=T)
 SES_bsim
 
@@ -960,7 +971,7 @@ pval.beta.sim.a
 w.bsim <- wilcox.test(SES_bsim, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
 w.bsim
 
-## taxonomic diveristy - beta sne
+## taxonomic diversity - beta sne
 SES_bsne <- (beta.t$beta.sne - apply(nbsne, MARGIN = 1, mean)) / apply(nbsne, MARGIN = 1, sd, na.rm=T)
 SES_bsne
 
@@ -997,7 +1008,7 @@ fbeta.sne <- colMeans(fbeta.sne)
 beta.f <- data.frame(fbeta.sor, fbeta.sim, fbeta.sne)
 beta.f.m <- as.matrix(t(colMeans(beta.f)))
 
-## functional diveristy - beta sor
+## functional diversity - beta sor
 SES_fbsor <- (beta.f$fbeta.sor - apply(nfsor, MARGIN = 1, mean)) / apply(nfsor, MARGIN = 1, sd, na.rm=T)
 SES_fbsor
 
@@ -1020,7 +1031,7 @@ pval.fbeta.sor.a
 w.fbsor <- wilcox.test(SES_fbsor, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
 w.fbsor
 
-## functional diveristy - beta sim
+## functional diversity - beta sim
 SES_fbsim <- (beta.f$fbeta.sim - apply(nfsim, MARGIN = 1, mean)) / apply(nfsim, MARGIN = 1, sd, na.rm=T)
 SES_fbsim
 
@@ -1045,7 +1056,7 @@ w.fbsim <- wilcox.test(SES_fbsim, y = NULL, mu = 0, alternative = c("two.sided")
 w.fbsim
 
 
-## functional diveristy - beta sne
+## functional diversity - beta sne
 SES_fbsne <- (beta.f$fbeta.sne - apply(nfsne, MARGIN = 1, mean)) / apply(nfsne, MARGIN = 1, sd, na.rm=T)
 SES_fbsne
 
@@ -1055,7 +1066,7 @@ abline(h = 0.0, col = "black", lwd = 3, lty=2)
 plot(SES_fbsne, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
-hist(as.matrix(nfsne), main = "Distribution of expected values - Functional Beta-Diversity - Turnover")
+hist(as.matrix(nfsne), main = "Distribution of expected values - Functional Beta-Diversity - Nestedness")
 abline(v = beta.f.m[,3], col = "blue", lwd = 2)
 
 pval.fbeta.sne <- apply(cbind(beta.f$fbeta.sne, nfsne), MARGIN = 1, rank)[1,] / 1000
@@ -1067,6 +1078,98 @@ pval.fbeta.sne.a
 
 w.fbsne <- wilcox.test(SES_fbsne, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
 w.fbsne
+
+
+# Phylogenetic Diversity
+pbeta.sor <- as.matrix(bb.phy$phylo.beta.sor)
+pbeta.sor <- colMeans(pbeta.sor)
+
+pbeta.sim <- as.matrix(bb.phy$phylo.beta.sim)
+pbeta.sim <- colMeans(pbeta.sim)
+
+pbeta.sne <- as.matrix(bb.phy$phylo.beta.sne)
+pbeta.sne <- colMeans(pbeta.sne)
+
+beta.p <- data.frame(pbeta.sor, pbeta.sim, pbeta.sne)
+beta.p.m <- as.matrix(t(colMeans(beta.p)))
+
+
+## phylogenetic diversity - beta sor
+SES_pbsor <- (beta.p$pbeta.sor - apply(npsor, MARGIN = 1, mean)) / apply(npsor, MARGIN = 1, sd, na.rm=T)
+SES_pbsor
+
+boxplot(SES_pbsor, ylim = c(-8, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_pbsor, pch = 19, cex = 1.5, ylim = c(-8, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(npsor), main = "Distribution of expected values - Phylogenetic Beta-Diversity", xlim = c(0.1, 1))
+abline(v = beta.p.m[,1], col = "blue", lwd = 2)
+
+pval.pbeta.sor <- apply(cbind(beta.p$pbeta.sor, npsor), MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sor
+pbsor <- cbind(beta.p$pbeta.sor, npsor)
+pbsor.m <- as.matrix(t(colMeans(pbsor)))
+pval.pbeta.sor.a <- apply(pbsor.m, MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sor.a
+
+w.pbsor <- wilcox.test(SES_pbsor, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsor
+
+## phylogenetic diversity - beta sim
+SES_pbsim <- (beta.p$pbeta.sim - apply(npsim, MARGIN = 1, mean)) / apply(npsim, MARGIN = 1, sd, na.rm=T)
+SES_pbsim
+
+boxplot(SES_pbsim)
+boxplot(SES_pbsim, ylim = c(-8, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_pbsim, pch = 19, cex = 1.5, ylim = c(-8, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(npsim), main = "Distribution of expected values - Phylogenetic Beta-Diversity - Turnover", xlim = c(0.01, 1))
+abline(v = beta.p.m[,2], col = "blue", lwd = 2)
+
+pval.pbeta.sim <- apply(cbind(beta.p$pbeta.sim, npsim), MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sim
+pbsim <- cbind(beta.p$pbeta.sim, npsim)
+pbsim.m <- as.matrix(t(colMeans(pbsim)))
+pval.pbeta.sim.a <- apply(pbsim.m, MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sim.a
+
+w.pbsim <- wilcox.test(SES_pbsim, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsim
+
+## phylogenetic diversity - beta sne
+SES_pbsne <- (beta.p$pbeta.sne - apply(npsne, MARGIN = 1, mean)) / apply(npsne, MARGIN = 1, sd, na.rm=T)
+SES_pbsne
+
+boxplot(SES_pbsne)
+boxplot(SES_pbsne, ylim = c(-0.5, 5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_pbsne, pch = 19, cex = 1.5, ylim = c(-0.5, 5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(npsne), main = "Distribution of expected values - Phylogenetic Beta-Diversity - Nestedness")
+abline(v = beta.p.m[,3], col = "blue", lwd = 2)
+
+pval.pbeta.sne <- apply(cbind(beta.p$pbeta.sne, npsne), MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sne
+pbsne <- cbind(beta.p$pbeta.sne, npsne)
+pbsne.m <- as.matrix(t(colMeans(pbsne)))
+pval.pbeta.sne.a <- apply(pbsne.m, MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sne.a
+
+w.pbsne <- wilcox.test(SES_pbsne, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsne
+
+# Phylogenetic Signal
+SES_physig_qbl_var <-(physig[,1] - apply(npsig[,1], MARGIN = 1, mean)) / apply(npsig[,1], MARGIN = 1, sd, na.rm=T)
+SES_physig_qbl_var
+
+
 
 ###################################################################################
 ####Differences in Overall Observed SES from Null Communities######################
