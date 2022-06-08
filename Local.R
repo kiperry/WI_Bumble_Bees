@@ -395,9 +395,9 @@ nfsim <- read.csv("Urban_to_Local_2Axes/bb_fbeta_sim.u.csv", row.names=1)
 nfsne <- read.csv("Urban_to_Local_2Axes/bb_fbeta_sne.u.csv", row.names=1)
 nfsor <- read.csv("Urban_to_Local_2Axes/bb_fbeta_sor.u.csv", row.names=1)
 
-npsim<- read.csv(file = "Urban_to_Local_2Axes/bb_pbeta_sim.csv")
-npsne<- read.csv(file = "Urban_to_Local_2Axes/bb_pbeta_sne.csv")
-npsor<- read.csv(file = "Urban_to_Local_2Axes/bb_pbeta_sor.csv")
+npsim<- read.csv(file = "Urban_to_Local_2Axes/bb_pbeta_sim.csv", row.names=1)
+npsne<- read.csv(file = "Urban_to_Local_2Axes/bb_pbeta_sne.csv", row.names=1)
+npsor<- read.csv(file = "Urban_to_Local_2Axes/bb_pbeta_sor.csv", row.names=1)
 
 #################################################################################################################
 
@@ -531,10 +531,37 @@ SES_fbsne <- (beta.f$fbeta.sne - apply(nfsne, MARGIN = 1, mean)) / apply(nfsne, 
 SES_fbsne
 
 
+# Phylogenetic Diversity
+pbeta.sor <- as.matrix(bb.phy$phylo.beta.sor)
+pbeta.sor <- colMeans(pbeta.sor)
+
+pbeta.sim <- as.matrix(bb.phy$phylo.beta.sim)
+pbeta.sim <- colMeans(pbeta.sim)
+
+pbeta.sne <- as.matrix(bb.phy$phylo.beta.sne)
+pbeta.sne <- colMeans(pbeta.sne)
+
+beta.p <- data.frame(pbeta.sor, pbeta.sim, pbeta.sne)
+
+
+## phylogenetic diversity - beta sor
+SES_pbsor <- (beta.p$pbeta.sor - apply(npsor, MARGIN = 1, mean)) / apply(npsor, MARGIN = 1, sd, na.rm=T)
+SES_pbsor
+
+## phylogenetic diversity - beta sim
+SES_pbsim <- (beta.p$pbeta.sim - apply(npsim, MARGIN = 1, mean)) / apply(npsim, MARGIN = 1, sd, na.rm=T)
+SES_pbsim
+
+## phylogenetic diversity - beta sne
+SES_pbsne <- (beta.p$pbeta.sne - apply(npsne, MARGIN = 1, mean)) / apply(npsne, MARGIN = 1, sd, na.rm=T)
+SES_pbsne
+
+
 ## combine all indices into one matrix
 SES <- cbind(SES_qblv, SES_mblv, SES_wblv, SES_tl_0, SES_tl_1, SES_tl_2, SES_nest0,
              SES_nest2, SES_it, SES_wingl, SES_headw, SES_eyel, SES_thairl, SES_setael, SES_tibial,
-             SES_bsor, SES_bsim, SES_bsne, SES_fbsor, SES_fbsim, SES_fbsne, SES_falpha)
+             SES_bsor, SES_bsim, SES_bsne, SES_fbsor, SES_fbsim, SES_fbsne, SES_falpha, SES_pbsor, 
+             SES_pbsim, SES_pbsne)
 SES <- as.data.frame(SES)
 str(SES)
 
@@ -544,6 +571,11 @@ SES$trmt <- c("Urban", "Agriculture", "Urban", "Urban", "Urban", "Agriculture", 
 str(SES)
 SES$trmt <- as.factor(SES$trmt)
 str(SES)
+
+write.csv(SES, file = "SES_Local.csv")
+
+# load the dataset
+SES <- read.csv("SES_Local.csv", row.names=1)
 
 
 ###################################################################################
@@ -868,6 +900,48 @@ w.fbsne.a <- wilcox.test(ag$SES_fbsne, y = NULL, mu = 0, alternative = c("two.si
 w.fbsne.a
 
 
+## phylogenetic beta diversity - beta sor
+hist(SES_pbsor)
+plot(SES_pbsor, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+boxplot(SES_pbsor ~ SES$trmt)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+## compare to null expectations by treatment
+w.pbsor.u <- wilcox.test(urban$SES_pbsor, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsor.u
+w.pbsor.a <- wilcox.test(ag$SES_pbsor, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsor.a
+
+
+## phylogenetic beta diversity - beta sim
+hist(SES_pbsim)
+plot(SES_pbsim, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+boxplot(SES_pbsim ~ SES$trmt)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+## compare to null expectations by treatment
+w.pbsim.u <- wilcox.test(urban$SES_pbsim, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsim.u
+w.pbsim.a <- wilcox.test(ag$SES_pbsim, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsim.a
+
+
+## phylogenetic beta diversity - beta sne
+hist(SES_pbsne)
+plot(SES_pbsne, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+boxplot(SES_pbsne ~ SES$trmt)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+## compare to null expectations by treatment
+w.pbsne.u <- wilcox.test(urban$SES_pbsne, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsne.u
+w.pbsne.a <- wilcox.test(ag$SES_pbsne, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsne.a
+
+
 ########################################################################################################
 ## Figures
 
@@ -931,6 +1005,75 @@ abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 
 dev.off()
+
+#####################################################################################################
+### figure panel - all diversity indices
+
+library(ggplot2)
+library(ggthemes)
+library(reshape2)
+library(viridis)
+
+SES_tbeta <- as.data.frame(SES[,c(18,17,16)])
+colnames(SES_tbeta) <- c("Nestedness", "Turnover", "Total")
+SES_tbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_tbeta$trmt <- as.factor(SES_tbeta$trmt)
+str(SES_tbeta)
+
+SES_fbeta <- as.data.frame(SES[,c(21,20,19)])
+colnames(SES_fbeta) <- c("Nestedness", "Turnover", "Total")
+SES_fbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_fbeta$trmt <- as.factor(SES_fbeta$trmt)
+str(SES_fbeta)
+
+SES_pbeta <- as.data.frame(SES[,c(25,24,23)])
+colnames(SES_pbeta) <- c("Nestedness", "Turnover", "Total")
+SES_pbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_pbeta$trmt <- as.factor(SES_pbeta$trmt)
+str(SES_pbeta)
+
+SES_tbeta$metric <- rep(c("Taxonomic"),each = 20)
+SES_fbeta$metric <- rep(c("Functional"),each = 20)
+SES_pbeta$metric <- rep(c("Phylogenetic"),each = 20)
+
+SES_div <- rbind(SES_tbeta, SES_fbeta, SES_pbeta)
+SES_div.m <- melt(SES_div)
+colnames(SES_div.m) <- c("trmt","metric", "var", "ses")
+
+levels(SES_div.m$trmt)[levels(SES_div.m$trmt)=="U"] <- "Urban"
+levels(SES_div.m$trmt)[levels(SES_div.m$trmt)=="A"] <- "Agriculture"
+
+SES_div.m$metric <- factor(SES_div.m$metric, levels = c("Taxonomic", "Functional", "Phylogenetic"))
+
+
+png("SES_Div_Local.png", width = 2000, height = 1000, pointsize = 20)
+
+ggplot(SES_div.m, aes(x=ses, y=var, fill = var)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_dotplot(position = position_jitter(width = 0.2, height = 0.2),
+               dotsize = 2,
+               binaxis = "y",
+               stackdir = "center") +
+  facet_grid(metric ~ trmt) + 
+  #coord_cartesian(xlim = c(-3, 4)) +
+  theme_few() +
+  theme(text = element_text(size = 24, color = "black"),
+        axis.text.x = element_text(color = "black"),
+        axis.text.y = element_text(color = "black"),
+        axis.title.x = element_text(vjust = 1, size = 28),
+        axis.title.y = element_text(vjust = 1, size = 28),
+        strip.text = element_text(face = "bold", size = rel(1.1)),
+        strip.background = element_rect(fill = "gray88", color = "black"),
+        legend.position = "none") +
+  labs(x = "Standardized Effect Sizes (SES)", y = "Beta-diversity Metrics") +
+  geom_vline(xintercept = 0, size = 1.2, linetype = "dashed") +
+  scale_fill_viridis(alpha = 0.7, discrete = TRUE, option = "D")
+
+dev.off()
+
 
 ##############################################################################
 

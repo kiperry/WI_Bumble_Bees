@@ -246,7 +246,7 @@ str(bb.phy)
 # calculate phylogenetic signals for traits
 # Blomberg's K (Blomberg, Garland, and Ives 2003)
 
-# create an empty dataframe
+# create an empty dataframe to store the values for each trait
 physig <- matrix(NA, nrow = 1, ncol = 10)
 colnames(physig) <- c("qbl_var", "mbl_var", "wbl_var", "it", "rwingl", "rheadw", "reyel", "thairl",
                       "bsetael", "rbtl")
@@ -262,6 +262,7 @@ physig[,8] <- phylosig(p4, t3$thairl, method = "K")
 physig[,9] <- phylosig(p4, t3$bsetael, method = "K")
 physig[,10] <- phylosig(p4, t3$rbtl, method = "K")
 
+# needs to be a data frame for use later
 physig <- as.data.frame(physig)
 
 ################################################################################
@@ -1166,9 +1167,90 @@ w.pbsne <- wilcox.test(SES_pbsne, y = NULL, mu = 0, alternative = c("two.sided")
 w.pbsne
 
 # Phylogenetic Signal
-SES_physig_qbl_var <-(physig[,1] - apply(npsig[,1], MARGIN = 1, mean)) / apply(npsig[,1], MARGIN = 1, sd, na.rm=T)
-SES_physig_qbl_var
 
+# transpose datasets to calculate SES values
+physig <- t(physig)
+npsig <- as.data.frame(t(npsig))
+
+# Queen body length variance
+SES_physig_qbl_var <-(physig[1,] - apply(npsig[1,], MARGIN = 1, mean)) / apply(npsig[1,], MARGIN = 1, sd, na.rm=T)
+SES_physig_qbl_var
+pval.physig_qbl_var <- apply(cbind(physig[1,], npsig[1,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_qbl_var
+hist(as.matrix(npsig[1,]), main = "Distribution of expected values - Phylogenetic Signal - QBL Variance")
+abline(v = physig[1,], col = "blue", lwd = 2)
+
+# Male body length variance
+SES_physig_mbl_var <-(physig[2,] - apply(npsig[2,], MARGIN = 1, mean)) / apply(npsig[2,], MARGIN = 1, sd, na.rm=T)
+SES_physig_mbl_var
+pval.physig_mbl_var <- apply(cbind(physig[2,], npsig[2,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_mbl_var
+hist(as.matrix(npsig[2,]), main = "Distribution of expected values - Phylogenetic Signal - MBL Variance")
+abline(v = physig[2,], col = "blue", lwd = 2)
+
+# Worker body length variance
+SES_physig_wbl_var <-(physig[3,] - apply(npsig[3,], MARGIN = 1, mean)) / apply(npsig[3,], MARGIN = 1, sd, na.rm=T)
+SES_physig_wbl_var
+pval.physig_wbl_var <- apply(cbind(physig[2,], npsig[2,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_wbl_var
+hist(as.matrix(npsig[3,]), main = "Distribution of expected values - Phylogenetic Signal - WBL Variance")
+abline(v = physig[3,], col = "blue", lwd = 2)
+
+# Intertegular distance
+SES_physig_it <-(physig[4,] - apply(npsig[6,], MARGIN = 1, mean)) / apply(npsig[6,], MARGIN = 1, sd, na.rm=T)
+SES_physig_it
+pval.physig_it <- apply(cbind(physig[4,], npsig[6,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_it
+hist(as.matrix(npsig[6,]), main = "Distribution of expected values - Phylogenetic Signal - IT Distance")
+abline(v = physig[4,], col = "blue", lwd = 2)
+
+# Wing length
+SES_physig_wl <-(physig[5,] - apply(npsig[7,], MARGIN = 1, mean)) / apply(npsig[7,], MARGIN = 1, sd, na.rm=T)
+SES_physig_wl
+pval.physig_wl <- apply(cbind(physig[5,], npsig[7,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_wl
+hist(as.matrix(npsig[7,]), main = "Distribution of expected values - Phylogenetic Signal - Wing length")
+abline(v = physig[5,], col = "blue", lwd = 2)
+
+# Head width
+SES_physig_hw <-(physig[6,] - apply(npsig[8,], MARGIN = 1, mean)) / apply(npsig[8,], MARGIN = 1, sd, na.rm=T)
+SES_physig_hw
+pval.physig_hw <- apply(cbind(physig[6,], npsig[8,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_hw
+hist(as.matrix(npsig[8,]), main = "Distribution of expected values - Phylogenetic Signal - Head width")
+abline(v = physig[6,], col = "blue", lwd = 2)
+
+# Eye length
+SES_physig_el <-(physig[7,] - apply(npsig[9,], MARGIN = 1, mean)) / apply(npsig[9,], MARGIN = 1, sd, na.rm=T)
+SES_physig_el
+pval.physig_el <- apply(cbind(physig[7,], npsig[9,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_el
+hist(as.matrix(npsig[9,]), main = "Distribution of expected values - Phylogenetic Signal - Eye length")
+abline(v = physig[7,], col = "blue", lwd = 2)
+
+# Thorax hair length
+SES_physig_hl <-(physig[8,] - apply(npsig[10,], MARGIN = 1, mean)) / apply(npsig[10,], MARGIN = 1, sd, na.rm=T)
+SES_physig_hl
+pval.physig_hl <- apply(cbind(physig[8,], npsig[10,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_hl
+hist(as.matrix(npsig[10,]), main = "Distribution of expected values - Phylogenetic Signal - Hair length")
+abline(v = physig[8,], col = "blue", lwd = 2)
+
+# Corbicula setae length
+SES_physig_sl <-(physig[9,] - apply(npsig[11,], MARGIN = 1, mean)) / apply(npsig[11,], MARGIN = 1, sd, na.rm=T)
+SES_physig_sl
+pval.physig_sl <- apply(cbind(physig[9,], npsig[11,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_sl
+hist(as.matrix(npsig[11,]), main = "Distribution of expected values - Phylogenetic Signal - Setae length")
+abline(v = physig[9,], col = "blue", lwd = 2)
+
+# Corbicula length
+SES_physig_cl <-(physig[10,] - apply(npsig[12,], MARGIN = 1, mean)) / apply(npsig[12,], MARGIN = 1, sd, na.rm=T)
+SES_physig_cl
+pval.physig_cl <- apply(cbind(physig[10,], npsig[12,]), MARGIN = 1, rank)[1,] / 1000
+pval.physig_cl
+hist(as.matrix(npsig[12,]), main = "Distribution of expected values - Phylogenetic Signal - Corbicula length")
+abline(v = physig[10,], col = "blue", lwd = 2)
 
 
 ###################################################################################
@@ -1176,15 +1258,15 @@ SES_physig_qbl_var
 
 SES <- cbind(SES_qblv, SES_mblv, SES_wblv, SES_tl_0, SES_tl_1, SES_tl_2, SES_nest0, SES_nest1,
              SES_nest2, SES_it, SES_wingl, SES_headw, SES_eyel, SES_thairl, SES_setael, SES_tibial,
-             SES_bsor, SES_bsim, SES_bsne, SES_fbsor, SES_fbsim, SES_fbsne)
+             SES_bsor, SES_bsim, SES_bsne, SES_fbsor, SES_fbsim, SES_fbsne, SES_pbsor, SES_pbsim, SES_pbsne)
 SES <- as.data.frame(SES)
 str(SES)
 
 
-write.csv(SES, file = "SES_Regional_to_Urban.csv")
+write.csv(SES, file = "SES_Regional.csv")
 
-# load the datasets
-SES <- read.csv("SES_Regional_to_Urban.csv", row.names=1)
+# load the dataset
+SES <- read.csv("SES_Regional.csv", row.names=1)
 
 ###################################################################################
 ##Differences in Observed SES from Null Communities by Treatment###################
@@ -1195,7 +1277,7 @@ library(viridis)
 library(reshape2)
 
 ## Body Size Traits ###############################################################
-SES_bl <- as.data.frame(cbind(SES_wblv, SES_mblv, SES_qblv, SES_it))
+SES_bl <- as.data.frame(SES[,c(3,2,1,10)])
 colnames(SES_bl) <- c("Worker BL Variance", "Male BL Variance", "Queen BL Variance", "Inter-tegular Distance")
 SES_bl$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
               "A", "U", "U", "A", "A")
@@ -1255,7 +1337,7 @@ w.it.a <- wilcox.test(ag.bl[,4], y = NULL, mu = 0, alternative = c("two.sided"),
 w.it.a
 
 ## Tongue Length ###############################################################
-SES_tl <- as.data.frame(cbind(SES_tl_2, SES_tl_1, SES_tl_0))
+SES_tl <- as.data.frame(SES[,c(6,5,4)])
 colnames(SES_tl) <- c("Long Tongue", "Medium Tongue", "Short Tongue")
 SES_tl$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
                  "A", "U", "U", "A", "A")
@@ -1310,7 +1392,7 @@ w.tl2.a
 
 
 ## Nest Location ###############################################################
-SES_nest <- as.data.frame(cbind(SES_nest1, SES_nest0, SES_nest2))
+SES_nest <- as.data.frame(SES[,c(8,7,9)])
 colnames(SES_nest) <- c("Kleptoparasitic", "Belowground Nests", "Aboveground Nests")
 SES_nest$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
                  "A", "U", "U", "A", "A")
@@ -1365,8 +1447,8 @@ w.nest2.a
 
 
 ## Other Traits ###############################################################
-SES_trait <- as.data.frame(cbind(SES_setael, SES_tibial, SES_thairl, SES_eyel, SES_headw, SES_wingl))
-colnames(SES_trait) <- c("PB Setae Length", "Tibia Length", "Thorax Hair Length", "Eye Length", "Head Width", "Wing Length")
+SES_trait <- as.data.frame(SES[,c(15,16,14,13,12,11)])
+colnames(SES_trait) <- c("Setae Length", "Tibia Length", "Thorax Hair Length", "Eye Length", "Head Width", "Wing Length")
 SES_trait$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
                    "A", "U", "U", "A", "A")
 SES_trait$trmt <- as.factor(SES_trait$trmt)
@@ -1390,11 +1472,6 @@ boxplot(ses ~ trait, data = urban.trait.SES, col = viridis(6, alpha = 0.6),
 stripchart(ses ~ trait, data = urban.trait.SES, col = viridis(6),
            pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
 abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -1.75, y = 6, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.6, y = 5, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.95, y = 4, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -1.9, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.1, y = 1, "*", pos = 4, font = 2, cex = 2.8)
 
 w.wingl.u <- wilcox.test(urban.trait[,6], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
 w.wingl.u
@@ -1422,10 +1499,6 @@ boxplot(ses ~ trait, data = ag.trait.SES, col = viridis(6, alpha = 0.6),
 stripchart(ses ~ trait, data = ag.trait.SES, col = viridis(6),
            pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
 abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -1.58, y = 6, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.7, y = 4, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -2.15, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.3, y = 1, "*", pos = 4, font = 2, cex = 2.8)
 
 w.wingl.a <- wilcox.test(ag.trait[,6], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
 w.wingl.a
@@ -1447,8 +1520,8 @@ w.tibial.a
 
 
 ## Taxonomic Beta-diversity ###############################################################
-SES_tbeta <- as.data.frame(cbind(SES_bsne, SES_bsim, SES_bsor))
-colnames(SES_tbeta) <- c("Nestedness", "Turnover", "Total Beta-Diversity")
+SES_tbeta <- as.data.frame(SES[,c(19,18,17)])
+colnames(SES_tbeta) <- c("Nestedness", "Turnover", "Total")
 SES_tbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
                    "A", "U", "U", "A", "A")
 SES_tbeta$trmt <- as.factor(SES_tbeta$trmt)
@@ -1472,9 +1545,6 @@ boxplot(ses ~ trait, data = urban.tbeta.SES, col = viridis(3, alpha = 0.6),
 stripchart(ses ~ trait, data = urban.tbeta.SES, col = viridis(3),
            pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
 abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -16, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -16, y = 2, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 11, y = 1, "*", pos = 4, font = 2, cex = 2.8)
 
 w.bsor.u <- wilcox.test(urban.tbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
 w.bsor.u
@@ -1493,9 +1563,6 @@ boxplot(ses ~ trait, data = ag.tbeta.SES, col = viridis(3, alpha = 0.6),
 stripchart(ses ~ trait, data = ag.tbeta.SES, col = viridis(3),
            pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
 abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -14.5, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -14.5, y = 2, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 10.5, y = 1, "*", pos = 4, font = 2, cex = 2.8)
 
 w.bsor.a <- wilcox.test(ag.tbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
 w.bsor.a
@@ -1508,8 +1575,8 @@ w.bsne.a
 
 
 ## Functional Beta-diversity ###############################################################
-SES_fbeta <- as.data.frame(cbind(SES_fbsne, SES_fbsim, SES_fbsor))
-colnames(SES_fbeta) <- c("Nestedness", "Turnover", "Total Beta-Diversity")
+SES_fbeta <- as.data.frame(SES[,c(22,21,20)])
+colnames(SES_fbeta) <- c("Nestedness", "Turnover", "Total")
 SES_fbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
                     "A", "U", "U", "A", "A")
 SES_fbeta$trmt <- as.factor(SES_fbeta$trmt)
@@ -1533,9 +1600,6 @@ boxplot(ses ~ trait, data = urban.fbeta.SES, col = viridis(3, alpha = 0.6),
 stripchart(ses ~ trait, data = urban.fbeta.SES, col = viridis(3),
            pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
 abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -5.3, y = 3, "*", pos = 2, font = 2, cex = 2.8)
-text(x = -3.7, y = 2, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -2.6, y = 1, "*", pos = 4, font = 2, cex = 2.8)
 
 w.fbsor.u <- wilcox.test(urban.fbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
 w.fbsor.u
@@ -1554,9 +1618,6 @@ boxplot(ses ~ trait, data = ag.fbeta.SES, col = viridis(3, alpha = 0.6),
 stripchart(ses ~ trait, data = ag.fbeta.SES, col = viridis(3),
            pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
 abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -5.6, y = 3, "*", pos = 2, font = 2, cex = 2.8)
-text(x = -3.7, y = 2, "*", pos = 4, font = 2, cex = 2.8)
-
 
 w.fbsor.a <- wilcox.test(ag.fbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
 w.fbsor.a
@@ -1568,448 +1629,148 @@ w.fbsne.a <- wilcox.test(ag.fbeta[,1], y = NULL, mu = 0, alternative = c("two.si
 w.fbsne.a
 
 
+## Phylogenetic Beta-diversity ###############################################################
+SES_pbeta <- as.data.frame(SES[,c(25,24,23)])
+colnames(SES_pbeta) <- c("Nestedness", "Turnover", "Total")
+SES_pbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_pbeta$trmt <- as.factor(SES_pbeta$trmt)
+str(SES_pbeta)
+
+urban.pbeta <- SES_pbeta[which(SES_pbeta$trmt == "U"),]
+ag.pbeta <- SES_pbeta[which(SES_pbeta$trmt == "A"),]
+
+urban.pbeta.SES <- melt(urban.pbeta)
+colnames(urban.pbeta.SES) <- c("trmt","trait","ses")
+
+ag.pbeta.SES <- melt(ag.pbeta)
+colnames(ag.pbeta.SES) <- c("trmt","trait","ses")
+
+#urban
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = urban.pbeta.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-8, 5),
+        horizontal = TRUE, las = 1, range = 0, main = "Urban")
+stripchart(ses ~ trait, data = urban.pbeta.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.pbsor.u <- wilcox.test(urban.pbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsor.u
+
+w.pbsim.u <- wilcox.test(urban.pbeta[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsim.u
+
+w.pbsne.u <- wilcox.test(urban.pbeta[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsne.u
+
+#ag
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = ag.pbeta.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-8, 5),
+        horizontal = TRUE, las = 1, range = 0, main = "Agriculture")
+stripchart(ses ~ trait, data = ag.pbeta.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.pbsor.a <- wilcox.test(ag.pbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsor.a
+
+w.pbsim.a <- wilcox.test(ag.pbeta[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsim.a
+
+w.pbsne.a <- wilcox.test(ag.pbeta[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsne.a
+
+
 #########################################################################################################
-## figure panel - body sizes
 
-png("SES_BL.png", width = 2200, height = 1000, pointsize = 20)
+### figure panel - all diversity indices
 
-par(mfrow=c(1,2))
-par(mar=c(5,10,4,2))
+library(ggplot2)
+library(ggthemes)
 
-boxplot(ses ~ trait, data = urban.bl.SES, col = viridis(4, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2, 2.2),
-        horizontal = TRUE, las = 1, range = 0, main = "Urban", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = urban.bl.SES, col = viridis(4),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = 2.1, y = 1, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.7, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -1.65, y = 4, "*", pos = 4, font = 2, cex = 2.8)
+SES_tbeta$metric <- rep(c("Taxonomic"),each = 20)
+SES_fbeta$metric <- rep(c("Functional"),each = 20)
+SES_pbeta$metric <- rep(c("Phylogenetic"),each = 20)
 
-boxplot(ses ~ trait, data = ag.bl.SES, col = viridis(4, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "",  ylim = c(-2, 2.2),
-        horizontal = TRUE, las = 1, range = 0, main = "Agriculture", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = ag.bl.SES, col = viridis(4),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = 1.8, y = 1, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.7, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -1.7, y = 4, "*", pos = 2, font = 2, cex = 2.8)
+SES_div <- rbind(SES_tbeta, SES_fbeta, SES_pbeta)
+SES_div.m <- melt(SES_div)
+colnames(SES_div.m) <- c("trmt","metric", "var", "ses")
 
-dev.off()
+levels(SES_div.m$trmt)[levels(SES_div.m$trmt)=="U"] <- "Urban"
+levels(SES_div.m$trmt)[levels(SES_div.m$trmt)=="A"] <- "Agriculture"
+
+SES_div.m$metric <- factor(SES_div.m$metric, levels = c("Taxonomic", "Functional", "Phylogenetic"))
 
 
-## figure panel - tongue length
+png("SES_Div.png", width = 2000, height = 1000, pointsize = 20)
 
-png("SES_TL.png", width = 2200, height = 1000, pointsize = 20)
-
-par(mfrow=c(1,2))
-par(mar=c(5,10,4,2))
-
-boxplot(ses ~ trait, data = urban.tl.SES, col = viridis(3, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2, 2),
-        horizontal = TRUE, las = 1, range = 0, main = "Urban", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = urban.tl.SES, col = viridis(3),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-
-boxplot(ses ~ trait, data = ag.tl.SES, col = viridis(3, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2, 2),
-        horizontal = TRUE, las = 1, range = 0, main = "Agriculture", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = ag.tl.SES, col = viridis(3),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-dev.off()
-
-
-## figure panel - nest locations
-
-png("SES_Nest.png", width = 2200, height = 1000, pointsize = 20)
-
-par(mfrow=c(1,2))
-par(mar=c(5,10,4,2))
-
-boxplot(ses ~ trait, data = urban.nest.SES, col = viridis(3, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2, 2),
-        horizontal = TRUE, las = 1, range = 0, main = "Urban", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = urban.nest.SES, col = viridis(3),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = 1.8, y = 3, "*", pos = 2, font = 2, cex = 2.8)
-text(x = -1.8, y = 1, "*", pos = 4, font = 2, cex = 2.8)
-
-boxplot(ses ~ trait, data = ag.nest.SES, col = viridis(3, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2, 2),
-        horizontal = TRUE, las = 1, range = 0, main = "Agriculture", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = ag.nest.SES, col = viridis(3),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = 1.8, y = 3, "*", pos = 2, font = 2, cex = 2.8)
-text(x = -1.8, y = 1, "*", pos = 4, font = 2, cex = 2.8)
+ggplot(SES_div.m, aes(x=ses, y=var, fill = var)) +
+              geom_boxplot(outlier.shape = NA) +
+              geom_dotplot(position = position_jitter(width = 0.2, height = 0.2),
+                           dotsize = 2,
+                           binaxis = "y",
+                           stackdir = "center") +
+              facet_grid(metric ~ trmt) + 
+              coord_cartesian(xlim = c(-12, 12)) +
+              theme_few() +
+              theme(text = element_text(size = 24, color = "black"),
+                    axis.text.x = element_text(color = "black"),
+                    axis.text.y = element_text(color = "black"),
+                    axis.title.x = element_text(vjust = 1, size = 28),
+                    axis.title.y = element_text(vjust = 1, size = 28),
+                    strip.text = element_text(face = "bold", size = rel(1.1)),
+                    strip.background = element_rect(fill = "gray88", color = "black"),
+                    legend.position = "none") +
+              labs(x = "Standardized Effect Sizes (SES)", y = "Beta-diversity Metrics") +
+              geom_vline(xintercept = 0, size = 1.2, linetype = "dashed") +
+              scale_fill_viridis(alpha = 0.7, discrete = TRUE, option = "D")
 
 dev.off()
 
-
-
-## figure panel - other traits
-
-png("SES_CWMs.png", width = 2200, height = 1000, pointsize = 20)
-
-par(mfrow=c(1,2))
-par(mar=c(5,10,4,2))
-
-boxplot(ses ~ trait, data = urban.trait.SES, col = viridis(6, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2, 2),
-        horizontal = TRUE, las = 1, range = 0, main = "Urban", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = urban.trait.SES, col = viridis(6),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -1.75, y = 6, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.6, y = 5, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.95, y = 4, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -1.9, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.1, y = 1, "*", pos = 4, font = 2, cex = 2.8)
-
-boxplot(ses ~ trait, data = ag.trait.SES, col = viridis(6, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2, 2),
-        horizontal = TRUE, las = 1, range = 0, main = "Agriculture", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = ag.trait.SES, col = viridis(6),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -1.58, y = 6, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.7, y = 4, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -2.15, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 1.3, y = 1, "*", pos = 4, font = 2, cex = 2.8)
-
-dev.off()
-
-
-
-## figure panel - taxonomic diversity indices
-
-png("SES_TDiv.png", width = 2200, height = 1000, pointsize = 20)
-
-par(mfrow=c(1,2))
-par(mar = c(5,10,4,2))
-
-boxplot(ses ~ trait, data = urban.tbeta.SES, col = viridis(3, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-15, 15),
-        horizontal = TRUE, las = 1, range = 0, main = "Urban", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = urban.tbeta.SES, col = viridis(3),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -16, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -16, y = 2, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 11, y = 1, "*", pos = 4, font = 2, cex = 2.8)
-
-boxplot(ses ~ trait, data = ag.tbeta.SES, col = viridis(3, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-15, 15),
-        horizontal = TRUE, las = 1, range = 0, main = "Agriculture", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = ag.tbeta.SES, col = viridis(3),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -14.5, y = 3, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -14.5, y = 2, "*", pos = 4, font = 2, cex = 2.8)
-text(x = 10.5, y = 1, "*", pos = 4, font = 2, cex = 2.8)
-
-dev.off()
-
-
-## figure panel - functional diversity indices
-
-png("SES_FDiv.png", width = 2200, height = 1000, pointsize = 20)
-
-par(mfrow=c(1,2))
-par(mar = c(5,10,4,2))
-
-boxplot(ses ~ trait, data = urban.fbeta.SES, col = viridis(3, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-6, 6),
-        horizontal = TRUE, las = 1, range = 0, main = "Urban", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = urban.fbeta.SES, col = viridis(3),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -5.3, y = 3, "*", pos = 2, font = 2, cex = 2.8)
-text(x = -3.7, y = 2, "*", pos = 4, font = 2, cex = 2.8)
-text(x = -2.6, y = 1, "*", pos = 4, font = 2, cex = 2.8)
-
-boxplot(ses ~ trait, data = ag.fbeta.SES, col = viridis(3, alpha = 0.5),
-        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-6, 6),
-        horizontal = TRUE, las = 1, range = 0, main = "Agriculture", cex.main = 2,
-        cex.lab = 1.5, cex.axis = 1.1)
-stripchart(ses ~ trait, data = ag.fbeta.SES, col = viridis(3),
-           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
-abline(v = 0.0, col = "black", lwd = 3, lty=2)
-text(x = -5.6, y = 3, "*", pos = 2, font = 2, cex = 2.8)
-text(x = -3.7, y = 2, "*", pos = 4, font = 2, cex = 2.8)
-
-dev.off()
-
-
-
-############################################################################################
-## import the environmental data
-
-## landscape
-
-land.all <- read.csv("./landscape_bytransect.csv", row.names=1)
-str(land.all)
-land15 <- land.all[1:17] #focus only on 1500 m
-str(land15)
-
-## check for correlated variables
-## pull out variables to include in the analysis
-plot(land15[2:17], pch = 19)
-cor(land15[2:17], method = c("pearson"), use = "complete.obs")
-
-#########################################################################################
-##GLMs
-##Identify landscape thresholds
-
-if (!suppressWarnings(require(nortest))) install.packages("nortest")
-citation("nortest")
-
-if (!suppressWarnings(require(car))) install.packages("car")
-citation("car")
-
-if (!suppressWarnings(require(bbmle))) install.packages("bbmle")
-citation("bbmle")
-
-if (!suppressWarnings(require(DHARMa))) install.packages("DHARMa")
-citation("DHARMa")
-
-if (!suppressWarnings(require(lme4))) install.packages("lme4")
-citation("lme4")
-
-if (!suppressWarnings(require(ggplot2))) install.packages("ggplot2")
-citation("ggplot2")
-
-if (!suppressWarnings(require(sjPlot))) install.packages("sjPlot")
-citation("sjPlot")
-
-if (!suppressWarnings(require(jtools))) install.packages("jtools")
-citation("jtools")
-
-if (!suppressWarnings(require(interactions))) install.packages("interactions")
-citation("interactions")
-
-## merge SES and landscape data
-dat <- merge(SES, land15, by = c("row.names"))
-str(dat)
-
-plot(dat[25:40])
-cor(dat[25:40], method = c("pearson"), use = "complete.obs")
-
-## check data for key landscape variables
-dotchart(dat$pland.nat.1500, pch = 19)
-dotchart(dat$pland.for.1500, pch = 19)
-dotchart(dat$SIDI1500, pch = 19)
-dotchart(dat$lpi.for.1500, pch = 19)
-dotchart(dat$enn.for.1500, pch = 19)
-
-
-## assess landscape thresholds
-
-# taxonomic beta diversity indices
-
-# bsor
-dotchart(dat$SES_bsor, pch = 19)
-hist(dat$SES_bsor)
-with(dat, ad.test(SES_bsor))
-plot(dat$SES_bsor, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-bsor.mod.full <- glm(SES_bsor ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(bsor.mod.full)
-step(bsor.mod.full)
-
-bsor.mod.red <- glm(SES_bsor ~ SIDI1500, family = gaussian, data = dat)
-summary(bsor.mod.red)
-
-qqnorm(resid(bsor.mod.red))
-qqline(resid(bsor.mod.red))
-plot(simulateResiduals(bsor.mod.red))
-densityPlot(rstudent(bsor.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(bsor.mod.red)
-influenceIndexPlot(bsor.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(bsor.mod.red)
-
-effect_plot(bsor.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
-# model comparison techniques
-anova(bsor.mod.full, bsor.mod.red)
-AICtab(bsor.mod.full, bsor.mod.red)
-
-
-
-# bsim
-dotchart(dat$SES_bsim, pch = 19)
-hist(dat$SES_bsim)
-with(dat, ad.test(SES_bsim))
-plot(dat$SES_bsim, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-bsim.mod.full <- glm(SES_bsim ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(bsim.mod.full)
-step(bsim.mod.full)
-
-bsim.mod.red <- glm(SES_bsim ~ pland.nat.1500 + SIDI1500, family = gaussian, data = dat)
-summary(bsim.mod.red)
-
-qqnorm(resid(bsim.mod.red))
-qqline(resid(bsim.mod.red))
-plot(simulateResiduals(bsim.mod.red))
-densityPlot(rstudent(bsim.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(bsim.mod.red)
-influenceIndexPlot(bsim.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(bsim.mod.red)
-
-effect_plot(bsim.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-effect_plot(bsim.mod.red, pred = pland.nat.1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Percentage Natural Habitat', y.label = 'Standardized Effect Sizes (SES)')
-
-
-# model comparison techniques
-anova(bsim.mod.full, bsim.mod.red)
-AICtab(bsim.mod.full, bsim.mod.red)
-
-
-
-# bsne
-dotchart(dat$SES_bsne, pch = 19)
-hist(dat$SES_bsne)
-with(dat, ad.test(SES_bsne))
-plot(dat$SES_bsne, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-bsne.mod.full <- glm(SES_bsne ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(bsne.mod.full)
-step(bsne.mod.full)
-
-bsne.mod.red <- glm(SES_bsne ~ pland.nat.1500, family = gaussian, data = dat)
-summary(bsne.mod.red)
-
-qqnorm(resid(bsne.mod.red))
-qqline(resid(bsne.mod.red))
-plot(simulateResiduals(bsne.mod.red))
-densityPlot(rstudent(bsne.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(bsne.mod.red)
-influenceIndexPlot(bsne.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(bsne.mod.red)
-
-effect_plot(bsne.mod.red, pred = pland.nat.1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Percentage Natural Habitat', y.label = 'Standardized Effect Sizes (SES)')
-
-# model comparison techniques
-anova(bsne.mod.full, bsne.mod.red)
-AICtab(bsne.mod.full, bsne.mod.red)
-
-
-
-
-# fbsor
-dotchart(dat$SES_fbsor, pch = 19)
-hist(dat$SES_fbsor)
-with(dat, ad.test(SES_fbsor))
-plot(dat$SES_fbsor, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-fbsor.mod.full <- glm(SES_fbsor ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(fbsor.mod.full)
-step(fbsor.mod.full)
-
-fbsor.mod.red <- glm(SES_fbsor ~ SIDI1500, family = gaussian, data = dat)
-summary(fbsor.mod.red)
-
-qqnorm(resid(fbsor.mod.red))
-qqline(resid(fbsor.mod.red))
-plot(simulateResiduals(fbsor.mod.red))
-densityPlot(rstudent(fbsor.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(fbsor.mod.red)
-influenceIndexPlot(fbsor.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(fbsor.mod.red)
-
-effect_plot(fbsor.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
-# model comparison techniques
-anova(fbsor.mod.full, fbsor.mod.red)
-AICtab(fbsor.mod.full, fbsor.mod.red)
-
-
-
-# fbsim
-dotchart(dat$SES_fbsim, pch = 19)
-hist(dat$SES_fbsim)
-with(dat, ad.test(SES_fbsim))
-plot(dat$SES_fbsim, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-fbsim.mod.full <- glm(SES_fbsim ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(fbsim.mod.full)
-step(fbsim.mod.full)
-
-fbsim.mod.red <- glm(SES_fbsim ~ enn.for.1500, family = gaussian, data = dat)
-summary(fbsim.mod.red)
-
-qqnorm(resid(fbsim.mod.red))
-qqline(resid(fbsim.mod.red))
-plot(simulateResiduals(fbsim.mod.red))
-densityPlot(rstudent(fbsim.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(fbsim.mod.red)
-influenceIndexPlot(fbsim.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(fbsim.mod.red)
-
-effect_plot(fbsim.mod.red, pred = enn.for.1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Forest Patch Isolation', y.label = 'Standardized Effect Sizes (SES)')
-
-# model comparison techniques
-anova(fbsim.mod.full, fbsim.mod.red)
-AICtab(fbsim.mod.full, fbsim.mod.red)
-
-
-
-# fbsne
-dotchart(dat$SES_fbsne, pch = 19)
-hist(dat$SES_fbsne)
-with(dat, ad.test(SES_fbsne))
-plot(dat$SES_fbsne, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-fbsne.mod.full <- glm(SES_fbsne ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(fbsne.mod.full)
-step(fbsne.mod.full)
-
-fbsne.mod.red <- glm(SES_fbsne ~ SIDI1500, family = gaussian, data = dat)
-summary(fbsne.mod.red)
-
-qqnorm(resid(fbsne.mod.red))
-qqline(resid(fbsne.mod.red))
-plot(simulateResiduals(fbsne.mod.red))
-densityPlot(rstudent(fbsne.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(fbsne.mod.red)
-influenceIndexPlot(fbsne.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(fbsne.mod.red)
-
-effect_plot(fbsne.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
-# model comparison techniques
-anova(fbsne.mod.full, fbsne.mod.red)
-AICtab(fbsne.mod.full, fbsne.mod.red)
-
-
-
-
-
+  
+  
+### figure panel - all CWMs
+
+SES_cwm <- cbind(SES_qblv, SES_mblv, SES_wblv, SES_it, SES_tl_0, SES_tl_1, SES_tl_2, SES_nest0, SES_nest1,
+             SES_nest2, SES_wingl, SES_headw, SES_eyel, SES_thairl, SES_setael, SES_tibial)
+SES_cwm <- as.data.frame(SES_cwm)
+str(SES_cwm)
+SES_cwm$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_cwm$trmt <- as.factor(SES_cwm$trmt)
+str(SES_cwm)
+
+SES_cwm.m <- melt(SES_cwm)
+colnames(SES_cwm.m) <- c("trmt","cwm", "ses")
+
+levels(SES_cwm.m$trmt)[levels(SES_cwm.m$trmt)=="U"] <- "Urban"
+levels(SES_cwm.m$trmt)[levels(SES_cwm.m$trmt)=="A"] <- "Agriculture"
+
+str(SES_cwm.m)
+
+png("SES_CWM.png", width = 2000, height = 1200, pointsize = 20)
+
+ggplot(SES_cwm.m, aes(x=ses, y=cwm, fill = cwm)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_dotplot(position = position_jitter(width = 0.2, height = 0.2),
+               dotsize = 0.6,
+               binaxis = "y",
+               stackdir = "center") +
+  facet_grid( ~ trmt) + 
+  coord_cartesian(xlim = c(-3, 3)) +
+  theme_few() +
+  theme(text = element_text(size = 24, color = "black"),
+        axis.text.x = element_text(color = "black"),
+        axis.text.y = element_text(color = "black"),
+        axis.title.x = element_text(vjust = 1, size = 28),
+        axis.title.y = element_text(vjust = 1, size = 28),
+        strip.text = element_text(face = "bold", size = rel(1.1)),
+        strip.background = element_rect(fill = "gray88", color = "black"),
+        legend.position = "none") +
+  labs(x = "Standardized Effect Sizes (SES)", y = "Community-weighted Means") +
+  geom_vline(xintercept = 0, size = 1.2, linetype = "dashed") +
+  scale_fill_viridis(alpha = 0.7, discrete = TRUE, option = "D")
+
+  dev.off()
