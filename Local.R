@@ -946,29 +946,29 @@ w.pbsne.a
 ## Figures
 
 # Taxonomic beta-diversity
-png("UL_SES_TDiv.png", width = 2500, height = 1000, pointsize = 30)
+png("L_SES_TDiv.png", width = 2500, height = 1000, pointsize = 30)
 
 par(mfrow=c(1,3))
 par(mar=c(5,8,4,2))
 
-boxplot(SES_bsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+boxplot(SES$SES_bsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(a) Total Beta-Diversity", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1.5,1.5), outline = FALSE)
-stripchart(SES_bsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-2.5,2.5), outline = FALSE)
+stripchart(SES$SES_bsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
-boxplot(SES_bsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+boxplot(SES$SES_bsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(b) Turnover", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1.5,1.5), outline = FALSE)
-stripchart(SES_bsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-2.5,2.5), outline = FALSE)
+stripchart(SES$SES_bsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
-boxplot(SES_bsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+boxplot(SES$SES_bsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(c) Nestedness", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1.5,1.5), outline = FALSE)
-stripchart(SES_bsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-2.5,2.5), outline = FALSE)
+stripchart(SES$SES_bsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
@@ -977,29 +977,60 @@ dev.off()
 
 
 # Functional beta-diversity
-png("UL_SES_FDiv.png", width = 2500, height = 1000, pointsize = 30)
+png("L_SES_FDiv.png", width = 2500, height = 1000, pointsize = 30)
 
 par(mfrow=c(1,3))
 par(mar=c(5,8,4,2))
 
-boxplot(SES_fbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+boxplot(SES$SES_fbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(a) Total Beta-Diversity", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-3,3), outline = FALSE)
-stripchart(SES_fbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,2.5), outline = FALSE)
+stripchart(SES$SES_fbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
-boxplot(SES_fbsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+boxplot(SES$SES_fbsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(b) Turnover", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-3,3), outline = FALSE)
-stripchart(SES_fbsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,2.5), outline = FALSE)
+stripchart(SES$SES_fbsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
-boxplot(SES_fbsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+boxplot(SES$SES_fbsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(c) Nestedness", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-3,3), outline = FALSE)
-stripchart(SES_fbsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,2.5), outline = FALSE)
+stripchart(SES$SES_fbsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+
+dev.off()
+
+
+# Phylogenetic beta-diversity
+png("L_SES_PDiv.png", width = 2500, height = 1000, pointsize = 30)
+
+par(mfrow=c(1,3))
+par(mar=c(5,8,4,2))
+
+boxplot(SES$SES_pbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(a) Total Beta-Diversity", cex.main = 2,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,4), outline = FALSE)
+stripchart(SES$SES_pbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+boxplot(SES$SES_pbsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(b) Turnover", cex.main = 2,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,4), outline = FALSE)
+stripchart(SES$SES_pbsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+boxplot(SES$SES_pbsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(c) Nestedness", cex.main = 2,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,4), outline = FALSE)
+stripchart(SES$SES_pbsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
@@ -1058,7 +1089,7 @@ ggplot(SES_div.m, aes(x=ses, y=var, fill = var)) +
                binaxis = "y",
                stackdir = "center") +
   facet_grid(metric ~ trmt) + 
-  #coord_cartesian(xlim = c(-3, 4)) +
+  coord_cartesian(xlim = c(-1, 3)) +
   theme_few() +
   theme(text = element_text(size = 24, color = "black"),
         axis.text.x = element_text(color = "black"),
@@ -1081,24 +1112,14 @@ dev.off()
 
 ## landscape
 
-land.all <- read.csv("./landscape_bytransect.csv", row.names=1)
-str(land.all)
-land15 <- land.all[1:17] #focus only on 1500 m
-str(land15)
+land <- read.csv("./landscape_bytransect.csv", row.names=1)
+str(land)
 
 ## check for correlated variables
 ## pull out variables to include in the analysis
-plot(land15[2:17], pch = 19)
-cor(land15[2:17], method = c("pearson"), use = "complete.obs")
+plot(land[2:8], pch = 19)
+cor(land[2:8], method = c("pearson"), use = "complete.obs")
 
-
-land <- as.data.frame(cbind(land15$SIDI1500, land15$pland.ag.1500, land15$pland.ur.1500, land15$pland.nat.1500,
-                            land15$lpi.for.1500, land15$clumpy.for.1500, land15$enn.for.1500))
-
-colnames(land) <- c("SIDI1500", "pland.ag.1500", "pland.ur.1500", "pland.nat.1500", "lpi.for.1500",
-                    "clumpy.for.1500", "enn.for.1500")
-plot(land, pch = 19)
-cor(land, method = c("pearson"), use = "complete.obs")
 
 ## check variables for outliers
 
@@ -1117,47 +1138,40 @@ plot(land$pland.nat.1500)
 dotchart(land$lpi.for.1500)
 plot(land$lpi.for.1500)
 
-dotchart(land$clumpy.for.1500)
-plot(land$clumpy.for.1500)
-land <- land[,-6]
-str(land)
+dotchart(land$ed.for.1500)
+plot(land$ed.for.1500)
 
-dotchart(land$lpi.for.1500)
-plot(land$lpi.for.1500)
-
-
-## local
-
-veg <- read.csv("./local_bytransect.csv", row.names=1)
-str(veg)
-
-plot(veg, pch = 19)
-cor(veg, method = c("pearson"), use = "complete.obs")
-
-## check variables for outliers
-
-dotchart(veg$fcover, pch = 19)
-plot(veg$fcover, pch = 19)
-
-dotchart(veg$grich, pch = 19)
-plot(veg$grich, pch = 19)
-
-dotchart(veg$blooms, pch = 19)
-plot(veg$blooms, pch = 19)
-
-
+dotchart(land$enn.for.1500)
+plot(land$enn.for.1500)
 
 ##########################################################################################
-##PLSCA analysis for pooled (2019 and 2020) bumble bee data
+##PLS analysis for pooled (2019 and 2020) bumble bee data and landscape data
 ##SES values
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("mixOmics")
+library(mixOmics)
+
 install.packages("plsdepot")
 library(plsdepot)
-library(mixOmics)
 
 ## landscape
 
 ## community trait means
-cwm_land <- pls(land, SES[1:15], mode = c("canonical"), ncomp = 2, scale = TRUE, max.iter = 100)
+
+cwm_1500 <- plsreg2(land[2:8], SES[1:15], comps = 2, crosval = TRUE)
+plot(cwm_1500)
+cwm_1500$cor.xt##these are correct for variables
+cwm_1500$cor.yu##these are correct for taxa
+
+cwm_1500$std.coefs
+cwm_1500$resid
+cwm_1500$expvar
+cwm_1500$VIP
+cwm_1500$Q2cum
+
+cwm_land <- pls(land[2:8], SES[1:15], mode = c("regression"), ncomp = 2, scale = TRUE, max.iter = 100)
 cwm_land
 
 cwm_land$loadings.star
@@ -1185,7 +1199,20 @@ cwm_land2$R2X##importance of variables on axes
 cwm_land2$R2Y##importance of taxa on axes
 
 ## diversity metrics
-div_land <- pls(land, SES[16:22], mode = c("canonical"), ncomp = 2, scale = TRUE, max.iter = 100)
+div_1500 <- plsreg2(land[2:8], SES[16:25], comps = 2, crosval = TRUE)
+plot(div_1500)
+
+div_1500$cor.xt##these are correct for variables
+div_1500$cor.yu##these are correct for taxa
+
+div_1500$std.coefs
+div_1500$resid
+div_1500$expvar
+div_1500$VIP
+div_1500$Q2cum
+
+
+div_land <- pls(land[2:8], SES[16:25], mode = c("canonical"), ncomp = 2, scale = TRUE, max.iter = 100)
 div_land
 
 div_land$explained_variance
@@ -1201,7 +1228,7 @@ nw_div_land <- network(div_land, cutoff = 0.5, color.edge = color.spectral(2), l
                        lwd.edge = 2)
 nw_div_land
 
-div_land2 <- plsca(land, SES[16:22], comps = 2, scaled=TRUE)
+div_land2 <- plsca(land, SES[16:25], comps = 2, scaled=TRUE)
 plot(div_land2)
 div_land2
 
@@ -1210,74 +1237,6 @@ div_land2$cor.yu##these are correct for taxa
 
 div_land2$R2X##importance of variables on axes
 div_land2$R2Y##importance of taxa on axes
-
-
-
-
-## local
-
-veg.na <- na.omit(veg)
-SES.na <- SES
-SES.na$grich <- veg$grich
-str(SES.na)
-SES.na <- na.omit(SES.na)
-
-## community trait means
-cwm_local <- pls(veg, SES[1:15], mode = c("canonical"), ncomp = 2, scale = TRUE, max.iter = 100)
-cwm_local
-
-cwm_local$explained_variance
-cwm_local$loadings
-cwm_local$variates
-
-plotVar(cwm_local)
-plotLoadings(cwm_local)
-
-cim(cwm_local)$mat.cor
-
-nw_cwm_local <- network(cwm_local, cutoff = 0.5, color.edge = color.spectral(2), lty.edge = c("solid", "dashed"),
-                        lwd.edge = 2)
-nw_cwm_local
-
-cwm_local2 <- plsca(veg.na, SES.na[1:15], comps = 2, scaled=TRUE)
-plot(cwm_local2)
-cwm_local2
-
-cwm_local2$cor.xt##these are correct for variables
-cwm_local2$cor.yu##these are correct for taxa
-
-cwm_local2$R2X##importance of variables on axes
-cwm_local2$R2Y##importance of taxa on axes
-
-## diversity metrics
-div_local <- pls(veg, SES[16:22], mode = c("canonical"), ncomp = 2, scale = TRUE, max.iter = 100)
-div_local
-
-div_local$prop_expl_var
-div_local$explained_variance
-div_local$loadings
-div_local$variates
-
-plotVar(div_local)
-plotLoadings(div_local)
-
-cim(div_local)$mat.cor
-
-nw_div_local <- network(div_local, cutoff = 0.5, color.edge = color.spectral(2), lty.edge = c("solid", "dashed"),
-                        lwd.edge = 2)
-nw_div_local
-
-div_local2 <- plsca(veg.na, SES.na[16:22], comps = 2, scaled=TRUE)
-plot(div_local2)
-div_local2
-
-div_local2$cor.xt##these are correct for variables
-div_local2$cor.yu##these are correct for taxa
-
-div_local2$R2X##importance of variables on axes
-div_local2$R2Y##importance of taxa on axes
-
-
 
 
 #########################################################################################
@@ -1312,19 +1271,8 @@ if (!suppressWarnings(require(interactions))) install.packages("interactions")
 citation("interactions")
 
 ## merge SES and landscape data
-dat <- merge(SES, land15, by = c("row.names"))
+dat <- merge(SES, land, by = c("row.names"))
 str(dat)
-
-plot(dat[26:41])
-cor(dat[26:41], method = c("pearson"), use = "complete.obs")
-
-## check data for key landscape variables
-dotchart(dat$pland.nat.1500, pch = 19)
-dotchart(dat$pland.for.1500, pch = 19)
-dotchart(dat$SIDI1500, pch = 19)
-dotchart(dat$lpi.for.1500, pch = 19)
-dotchart(dat$enn.for.1500, pch = 19)
-
 
 ## assess landscape thresholds
 
