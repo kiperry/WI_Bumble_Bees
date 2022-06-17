@@ -1185,6 +1185,34 @@ nw_cwm_land <- network(cwm_land.red, cutoff = 0.5, color.edge = color.spectral(2
             lwd.edge = 2)
 nw_cwm_land
 
+cwm_nw <- as.data.frame(nw_cwm_land$M)
+write.csv(cwm_nw, file = "cwm_similarity_values.csv")
+
+cwm_land.red.pred <- as.data.frame(cwm_land.red$loadings$X)
+write.csv(cwm_land.red.pred, file = "cwm_predictor_loadings.csv")
+
+cwm_land.red.resp <- as.data.frame(cwm_land.red$loadings$Y)
+write.csv(cwm_land.red.resp, file = "cwm_response_loadings.csv")
+
+plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) CWM Metrics", cex = 1.6)
+points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
+abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
+text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
+text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
+text(0.19, 0.621, "Urban", pos = 4, font = 1, cex = 1)
+text(-0.48, -0.185, "Natural Habitat", pos = 4, font = 1, cex = 1)
+text(-0.42, 0.069, "LPI Forest", pos = 4, font = 1, cex = 1)
+text(-0.53, -0.10, "ED Forest", pos = 2, font = 1, cex = 1)
+
+text(-0.43, 0.185, "MBLV", pos = 2, font = 2, cex = 1)
+text(0.05, 0.647, "Short Tongue", pos = 2, font = 2, cex = 1)
+text(-0.148, -0.577, "Long Tongue", pos = 2, font = 2, cex = 1)
+text(-0.33, -0.08, "IT", pos = 2, font = 2, cex = 1)
+text(0.49, 0.064, "Head Width", pos = 2, font = 2, cex = 1)
+text(0.45, 0.197, "Eye Length", pos = 2, font = 2, cex = 1)
+text(0.36, -0.188, "Hair Length", pos = 2, font = 2, cex = 1)
+text(0.31, -0.375, "Tibia Length", pos = 2, font = 2, cex = 1)
 
 ## diversity metrics
 div_land <- pls(land[2:8], SES[16:25], mode = c("canonical"), ncomp = 2, scale = TRUE, max.iter = 100)
@@ -1213,361 +1241,84 @@ nw_div_land <- network(div_land.red, cutoff = 0.5, color.edge = color.spectral(2
                        lwd.edge = 2)
 nw_div_land
 
-
-#########################################################################################
-##GLMs
-##Identify landscape thresholds
-
-if (!suppressWarnings(require(nortest))) install.packages("nortest")
-citation("nortest")
-
-if (!suppressWarnings(require(car))) install.packages("car")
-citation("car")
-
-if (!suppressWarnings(require(bbmle))) install.packages("bbmle")
-citation("bbmle")
-
-if (!suppressWarnings(require(DHARMa))) install.packages("DHARMa")
-citation("DHARMa")
-
-if (!suppressWarnings(require(lme4))) install.packages("lme4")
-citation("lme4")
-
-if (!suppressWarnings(require(ggplot2))) install.packages("ggplot2")
-citation("ggplot2")
-
-if (!suppressWarnings(require(sjPlot))) install.packages("sjPlot")
-citation("sjPlot")
-
-if (!suppressWarnings(require(jtools))) install.packages("jtools")
-citation("jtools")
-
-if (!suppressWarnings(require(interactions))) install.packages("interactions")
-citation("interactions")
-
-## merge SES and landscape data
-dat <- merge(SES, land, by = c("row.names"))
-str(dat)
-
-## assess landscape thresholds
-
-# taxonomic beta diversity indices
-
-# bsor
-dotchart(dat$SES_bsor, pch = 19)
-hist(dat$SES_bsor)
-with(dat, ad.test(SES_bsor))
-plot(dat$SES_bsor, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-bsor.mod.full <- glm(SES_bsor ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(bsor.mod.full)
-step(bsor.mod.full)
-
-bsor.mod.red <- glm(SES_bsor ~ SIDI1500, family = gaussian, data = dat)
-summary(bsor.mod.red)
-
-qqnorm(resid(bsor.mod.red))
-qqline(resid(bsor.mod.red))
-plot(simulateResiduals(bsor.mod.red))
-densityPlot(rstudent(bsor.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(bsor.mod.red)
-influenceIndexPlot(bsor.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(bsor.mod.red)
-
-effect_plot(bsor.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
-bsor.mod.null <- glm(SES_bsor ~ 1, family = gaussian, data = dat)
-
-# model comparison techniques
-anova(bsor.mod.full, bsor.mod.red, bsor.mod.null)
-AICctab(bsor.mod.full, bsor.mod.red, bsor.mod.null)
-
-
-
-# bsim
-dotchart(dat$SES_bsim, pch = 19)
-hist(dat$SES_bsim)
-with(dat, ad.test(SES_bsim))
-plot(dat$SES_bsim, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-bsim.mod.full <- glm(SES_bsim ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(bsim.mod.full)
-step(bsim.mod.full)
-
-bsim.mod.red <- glm(SES_bsim ~ SIDI1500, family = gaussian, data = dat)
-summary(bsim.mod.red)
-
-qqnorm(resid(bsim.mod.red))
-qqline(resid(bsim.mod.red))
-plot(simulateResiduals(bsim.mod.red))
-densityPlot(rstudent(bsim.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(bsim.mod.red)
-influenceIndexPlot(bsim.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(bsim.mod.red)
-
-effect_plot(bsim.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
-bsim.mod.null <- glm(SES_bsim ~ 1, family = gaussian, data = dat)
-
-# model comparison techniques
-anova(bsim.mod.full, bsim.mod.red, bsim.mod.null)
-AICtab(bsim.mod.full, bsim.mod.red, bsim.mod.null)
-
-
-
-# bsne
-dotchart(dat$SES_bsne, pch = 19)
-hist(dat$SES_bsne)
-with(dat, ad.test(SES_bsne))
-plot(dat$SES_bsne, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-bsne.mod.full <- glm(SES_bsne ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(bsne.mod.full)
-step(bsne.mod.full)
-
-bsne.mod.red <- glm(SES_bsne ~ SIDI1500, family = gaussian, data = dat)
-summary(bsne.mod.red)
-
-qqnorm(resid(bsne.mod.red))
-qqline(resid(bsne.mod.red))
-plot(simulateResiduals(bsne.mod.red))
-densityPlot(rstudent(bsne.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(bsne.mod.red)
-influenceIndexPlot(bsne.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(bsne.mod.red)
-
-effect_plot(bsne.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
-bsne.mod.null <- glm(SES_bsne ~ 1, family = gaussian, data = dat)
-
-# model comparison techniques
-anova(bsne.mod.full, bsne.mod.red, bsne.mod.null)
-AICtab(bsne.mod.full, bsne.mod.red, bsne.mod.null)
-
-
-
-# falpha
-dotchart(dat$SES_falpha, pch = 19)
-hist(dat$SES_falpha)
-with(dat, ad.test(SES_falpha))
-plot(dat$SES_falpha, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-falpha.mod.full <- glm(SES_falpha ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(falpha.mod.full)
-step(falpha.mod.full)
-
-falpha.mod.red <- glm(SES_falpha ~ SIDI1500, family = gaussian, data = dat)
-summary(falpha.mod.red)
-
-qqnorm(resid(falpha.mod.red))
-qqline(resid(falpha.mod.red))
-plot(simulateResiduals(falpha.mod.red))
-densityPlot(rstudent(falpha.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(falpha.mod.red)
-influenceIndexPlot(falpha.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(falpha.mod.red)
-
-effect_plot(falpha.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
-falpha.mod.null <- glm(SES_falpha ~ 1, family = gaussian, data = dat)
-
-# model comparison techniques
-anova(falpha.mod.full, falpha.mod.red, falpha.mod.null)
-AICtab(falpha.mod.full, falpha.mod.red, falpha.mod.null)
-
-
-
-# fbsor
-dotchart(dat$SES_fbsor, pch = 19)
-hist(dat$SES_fbsor)
-with(dat, ad.test(SES_fbsor))
-plot(dat$SES_fbsor, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-fbsor.mod.full <- glm(SES_fbsor ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(fbsor.mod.full)
-step(fbsor.mod.full)
-
-fbsor.mod.null <- glm(SES_fbsor ~ 1, family = gaussian, data = dat)
-summary(fbsor.mod.null)
-fbsor.mod.null2 <- update(fbsor.mod.null, subset = -c(15))
-summary(fbsor.mod.null2)
-
-qqnorm(resid(fbsor.mod.null))
-qqline(resid(fbsor.mod.null))
-plot(simulateResiduals(fbsor.mod.null))
-densityPlot(rstudent(fbsor.mod.null)) # check density estimate of the distribution of residuals
-outlierTest(fbsor.mod.null)
-influenceIndexPlot(fbsor.mod.null, vars = c("Cook"), id = list(n = 3))
-
-# significant outlier, let's remove it and see if the model fits better
-fbsor.mod.full2 <- update(fbsor.mod.full, subset = -c(15))
-summary(fbsor.mod.full2)
-
-compareCoefs(fbsor.mod.full, fbsor.mod.full2) # compares estimated coefficients and their standard errors
-
-step(fbsor.mod.full2) # null model still the best
-
-# model comparison techniques
-anova(fbsor.mod.full, fbsor.mod.null)
-AICtab(fbsor.mod.full, fbsor.mod.null)
-
-
-
-# fbsim
-dotchart(dat$SES_fbsim, pch = 19)
-hist(dat$SES_fbsim)
-with(dat, ad.test(SES_fbsim))
-plot(dat$SES_fbsim, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-fbsim.mod.full <- glm(SES_fbsim ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(fbsim.mod.full)
-step(fbsim.mod.full)
-
-fbsim.mod.null <- glm(SES_fbsim ~ 1, family = gaussian, data = dat)
-fbsim.mod.null2 <- update(fbsim.mod.null, subset = -c(15))
-summary(fbsim.mod.null2)
-
-qqnorm(resid(fbsim.mod.null))
-qqline(resid(fbsim.mod.null))
-plot(simulateResiduals(fbsim.mod.null))
-densityPlot(rstudent(fbsim.mod.null)) # check density estimate of the distribution of residuals
-outlierTest(fbsim.mod.null)
-influenceIndexPlot(fbsim.mod.null, vars = c("Cook"), id = list(n = 3))
-
-# significant outlier, let's remove it and see if the model fits better
-fbsim.mod.full2 <- update(fbsim.mod.full, subset = -c(15))
-summary(fbsim.mod.full2)
-
-compareCoefs(fbsim.mod.full, fbsim.mod.full2) # compares estimated coefficients and their standard errors
-
-step(fbsim.mod.full2)
-
-fbsim.mod.red <- glm(SES_fbsim ~ pland.nat.1500 + lpi.for.1500, family = gaussian, data = dat)
-fbsim.mod.red2 <- update(fbsim.mod.red, subset = -c(15))
-summary(fbsim.mod.red2)
-
-qqnorm(resid(fbsim.mod.red2))
-qqline(resid(fbsim.mod.red2))
-plot(simulateResiduals(fbsim.mod.red2))
-densityPlot(rstudent(fbsim.mod.red2)) # check density estimate of the distribution of residuals
-outlierTest(fbsim.mod.red2)
-influenceIndexPlot(fbsim.mod.red2, vars = c("Cook"), id = list(n = 3))
-
-# model comparison techniques
-anova(fbsim.mod.full2, fbsim.mod.null2, fbsim.mod.red2)
-AICtab(fbsim.mod.full2, fbsim.mod.null2, fbsim.mod.red2)
-
-Anova(fbsim.mod.red2)
-
-effect_plot(fbsim.mod.red2, pred = lpi.for.1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Largest Patch Index', y.label = 'Standardized Effect Sizes (SES)')
-effect_plot(fbsim.mod.red2, pred = pland.nat.1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Percentage Natural Habitat', y.label = 'Standardized Effect Sizes (SES)')
-
-
-# fbsne
-dotchart(dat$SES_fbsne, pch = 19)
-hist(dat$SES_fbsne)
-with(dat, ad.test(SES_fbsne))
-plot(dat$SES_fbsne, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-fbsne.mod.full <- glm(SES_fbsne ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(fbsne.mod.full)
-step(fbsne.mod.full)
-
-fbsne.mod.null <- glm(SES_fbsne ~ 1, family = gaussian, data = dat)
-summary(fbsne.mod.null)
-
-qqnorm(resid(fbsne.mod.null))
-qqline(resid(fbsne.mod.null))
-plot(simulateResiduals(fbsne.mod.null))
-densityPlot(rstudent(fbsne.mod.null)) # check density estimate of the distribution of residuals
-outlierTest(fbsne.mod.null)
-influenceIndexPlot(fbsne.mod.null, vars = c("Cook"), id = list(n = 3))
-
-
-# pbsor
-dotchart(dat$SES_pbsor, pch = 19)
-hist(dat$SES_pbsor)
-with(dat, ad.test(SES_pbsor))
-plot(dat$SES_pbsor, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-pbsor.mod.full <- glm(SES_pbsor ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(pbsor.mod.full)
-step(pbsor.mod.full)
-
-pbsor.mod.red <- glm(SES_pbsor ~ pland.nat.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(pbsor.mod.red)
-
-qqnorm(resid(pbsor.mod.red))
-qqline(resid(pbsor.mod.red))
-plot(simulateResiduals(pbsor.mod.red))
-densityPlot(rstudent(pbsor.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(pbsor.mod.red)
-influenceIndexPlot(pbsor.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(pbsor.mod.red)
-
-effect_plot(pbsor.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
-
-
-# pbsim
-dotchart(dat$SES_pbsim, pch = 19)
-hist(dat$SES_pbsim)
-with(dat, ad.test(SES_pbsim))
-plot(dat$SES_pbsim, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-pbsim.mod.full <- glm(SES_pbsim ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(pbsim.mod.full)
-step(pbsim.mod.full)
-
-pbsim.mod.red <- glm(SES_pbsim ~ SIDI1500, family = gaussian, data = dat)
-summary(pbsim.mod.red)
-
-qqnorm(resid(pbsim.mod.red))
-qqline(resid(pbsim.mod.red))
-plot(simulateResiduals(pbsim.mod.red))
-densityPlot(rstudent(pbsim.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(pbsim.mod.red)
-influenceIndexPlot(pbsim.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(pbsim.mod.red)
-
-
-# pbsne
-dotchart(dat$SES_pbsne, pch = 19)
-hist(dat$SES_pbsne)
-with(dat, ad.test(SES_pbsne))
-plot(dat$SES_pbsne, pch = 19)
-abline(h = 0.0, col = "black", lwd = 3, lty=2)
-
-pbsne.mod.full <- glm(SES_pbsne ~ pland.nat.1500 + lpi.for.1500 + enn.for.1500 + SIDI1500, family = gaussian, data = dat)
-summary(pbsne.mod.full)
-step(pbsne.mod.full)
-
-pbsne.mod.red <- glm(SES_pbsne ~ SIDI1500, family = gaussian, data = dat)
-summary(pbsne.mod.red)
-
-qqnorm(resid(pbsne.mod.red))
-qqline(resid(pbsne.mod.red))
-plot(simulateResiduals(pbsne.mod.red))
-densityPlot(rstudent(pbsne.mod.red)) # check density estimate of the distribution of residuals
-outlierTest(pbsne.mod.red)
-influenceIndexPlot(pbsne.mod.red, vars = c("Cook"), id = list(n = 3))
-
-Anova(pbsne.mod.red)
-
-effect_plot(pbsne.mod.red, pred = SIDI1500, interval = TRUE, partial.residuals = TRUE, x.label = 'Landscape Diversity', y.label = 'Standardized Effect Sizes (SES)')
-
+div_nw <- as.data.frame(nw_div_land$M)
+write.csv(div_nw, file = "div_similarity_values.csv")
+
+div_land.red.pred <- as.data.frame(div_land.red$loadings$X)
+write.csv(cwm_land.red.pred, file = "div_predictor_loadings.csv")
+
+div_land.red.resp <- as.data.frame(div_land.red$loadings$Y)
+write.csv(cwm_land.red.resp, file = "div_response_loadings.csv")
+
+plot(div_land.red.pred$comp2 ~ div_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) Diversity Metrics", cex = 1.6)
+points(div_land.red.resp$comp2 ~ div_land.red.resp$comp1, pch = 15, cex = 1.6)
+abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
+text(0.69, -0.225, "Landscape Diversity", pos = 2, font = 1, cex = 1)
+text(-0.52, -0.278, "Agriculture", pos = 4, font = 1, cex = 1)
+text(0.45, 0.296, "Urban", pos = 4, font = 1, cex = 1)
+text(0.04, -0.36, "Natural Habitat", pos = 4, font = 1, cex = 1)
+text(0.17, -0.30, "LPI Forest", pos = 3, font = 1, cex = 1)
+text(0.029, -0.54, "ED Forest", pos = 4, font = 1, cex = 1)
+text(-0.09, 0.518, "ENN Forest", pos = 2, font = 1, cex = 1)
+
+text(-0.395, -0.128, "TBsor", pos = 2, font = 2, cex = 1)
+text(-0.38, -0.115, "TBsim", pos = 4, font = 2, cex = 1)
+text(0.40, 0.069, "TBsne", pos = 2, font = 2, cex = 1)
+text(-0.065, 0.363, "FBsor", pos = 2, font = 2, cex = 1)
+text(0.35, -0.31, "Falpha", pos = 2, font = 2, cex = 1)
+text(-0.347, -0.568, "PBsor", pos = 2, font = 2, cex = 1)
+text(-0.39, -0.11, "PBsim", pos = 3, font = 2, cex = 1)
+text(0.375, -0.62, "PBsne", pos = 2, font = 2, cex = 1)
+
+
+# Make the figure
+png("Fig.PLS.png", width = 2200, height = 1000, pointsize = 20)
+
+par(mfrow=c(1,2)) # one row and two columns
+par(mar=c(5,8,4,2))
+
+#CWM
+plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) CWM Metrics", cex = 1.6)
+points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
+abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
+text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
+text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
+text(0.19, 0.621, "Urban", pos = 4, font = 1, cex = 1)
+text(-0.48, -0.185, "Natural Habitat", pos = 4, font = 1, cex = 1)
+text(-0.42, 0.069, "LPI Forest", pos = 4, font = 1, cex = 1)
+text(-0.53, -0.10, "ED Forest", pos = 2, font = 1, cex = 1)
+
+text(-0.43, 0.185, "MBLV", pos = 2, font = 2, cex = 1)
+text(0.05, 0.644, "Short Tongue", pos = 2, font = 2, cex = 1)
+text(-0.148, -0.577, "Long Tongue", pos = 2, font = 2, cex = 1)
+text(-0.33, -0.08, "IT", pos = 2, font = 2, cex = 1)
+text(0.49, 0.064, "Head Width", pos = 2, font = 2, cex = 1)
+text(0.45, 0.197, "Eye Length", pos = 2, font = 2, cex = 1)
+text(0.36, -0.188, "Hair Length", pos = 2, font = 2, cex = 1)
+text(0.31, -0.375, "Corbicula Length", pos = 2, font = 2, cex = 1)
+
+#Diversity
+plot(div_land.red.pred$comp2 ~ div_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(b) Diversity Metrics", cex = 1.6)
+points(div_land.red.resp$comp2 ~ div_land.red.resp$comp1, pch = 15, cex = 1.6)
+abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
+text(0.69, -0.225, "Landscape Diversity", pos = 2, font = 1, cex = 1)
+text(-0.52, -0.278, "Agriculture", pos = 4, font = 1, cex = 1)
+text(0.45, 0.296, "Urban", pos = 4, font = 1, cex = 1)
+text(0.04, -0.36, "Natural Habitat", pos = 4, font = 1, cex = 1)
+text(0.17, -0.30, "LPI Forest", pos = 3, font = 1, cex = 1)
+text(0.029, -0.54, "ED Forest", pos = 4, font = 1, cex = 1)
+text(-0.09, 0.518, "ENN Forest", pos = 2, font = 1, cex = 1)
+
+text(-0.395, -0.128, "TBsor", pos = 2, font = 2, cex = 1)
+text(-0.38, -0.115, "TBsim", pos = 4, font = 2, cex = 1)
+text(0.40, 0.069, "TBsne", pos = 2, font = 2, cex = 1)
+text(-0.065, 0.363, "FBsor", pos = 2, font = 2, cex = 1)
+text(0.35, -0.31, "Falpha", pos = 2, font = 2, cex = 1)
+text(-0.347, -0.568, "PBsor", pos = 2, font = 2, cex = 1)
+text(-0.39, -0.11, "PBsim", pos = 3, font = 2, cex = 1)
+text(0.375, -0.627, "PBsne", pos = 2, font = 2, cex = 1)
+
+dev.off()
