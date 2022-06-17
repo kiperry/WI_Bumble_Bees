@@ -10,7 +10,6 @@
 # Phylogenetic Diversity
 # Null Models
 # PLS Analyses
-# Landscape threshold analyses
 #
 # KI Perry; 21 December 2021
 #
@@ -1290,10 +1289,10 @@ text(-0.48, -0.185, "Natural Habitat", pos = 4, font = 1, cex = 1)
 text(-0.42, 0.069, "LPI Forest", pos = 4, font = 1, cex = 1)
 text(-0.53, -0.10, "ED Forest", pos = 2, font = 1, cex = 1)
 
-text(-0.43, 0.185, "MBLV", pos = 2, font = 2, cex = 1)
+text(-0.43, 0.185, "Male Body Length Variance", pos = 3, font = 2, cex = 1)
 text(0.05, 0.644, "Short Tongue", pos = 2, font = 2, cex = 1)
 text(-0.148, -0.577, "Long Tongue", pos = 2, font = 2, cex = 1)
-text(-0.33, -0.08, "IT", pos = 2, font = 2, cex = 1)
+text(-0.33, -0.08, "Inter-tegular Distance", pos = 3, font = 2, cex = 1)
 text(0.49, 0.064, "Head Width", pos = 2, font = 2, cex = 1)
 text(0.45, 0.197, "Eye Length", pos = 2, font = 2, cex = 1)
 text(0.36, -0.188, "Hair Length", pos = 2, font = 2, cex = 1)
