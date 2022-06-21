@@ -634,10 +634,10 @@ w.wbl_var.a
 
 
 ## short tongue
-hist(SES_tl_0)
-plot(SES_tl_0, pch = 19, cex = 1.5)
+hist(SES$SES_tl_0)
+plot(SES$SES_tl_0, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_tl_0 ~ SES$trmt)
+boxplot(SES$SES_tl_0 ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -648,10 +648,10 @@ w.tl_0.a
 
 
 ## medium tongue
-hist(SES_tl_1)
-plot(SES_tl_1, pch = 19, cex = 1.5, ylim = c(-0.5, 1.8))
+hist(SES$SES_tl_1)
+plot(SES$SES_tl_1, pch = 19, cex = 1.5, ylim = c(-0.5, 1.8))
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_tl_1 ~ SES$trmt, ylim = c(-0.5, 1.8))
+boxplot(SES$SES_tl_1 ~ SES$trmt, ylim = c(-0.5, 1.8))
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -662,10 +662,10 @@ w.tl_1.a
 
 
 ## long tongue
-hist(SES_tl_2)
-plot(SES_tl_2, pch = 19, cex = 1.5)
+hist(SES$SES_tl_2)
+plot(SES$SES_tl_2, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_tl_2 ~ SES$trmt)
+boxplot(SES$SES_tl_2 ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -676,10 +676,10 @@ w.tl_2.a
 
 
 ## below ground nests
-hist(SES_nest0)
-plot(SES_nest0, pch = 19, cex = 1.5)
+hist(SES$SES_nest0)
+plot(SES$SES_nest0, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_nest0 ~ SES$trmt)
+boxplot(SES$SES_nest0 ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -690,10 +690,10 @@ w.nest0.a
 
 
 ## above ground nests
-hist(SES_nest2)
-plot(SES_nest2, pch = 19, cex = 1.5)
+hist(SES$SES_nest2)
+plot(SES$SES_nest2, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_nest2 ~ SES$trmt)
+boxplot(SES$SES_nest2 ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -704,10 +704,10 @@ w.nest2.a
 
 
 ## inter-tegular distance (body size)
-hist(SES_it)
-plot(SES_it, pch = 19, cex = 1.5, ylim = c(-0.5, 16))
+hist(SES$SES_it)
+plot(SES$SES_it, pch = 19, cex = 1.5, ylim = c(-0.5, 16))
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_it ~ SES$trmt, ylim = c(-0.5, 16))
+boxplot(SES$SES_it ~ SES$trmt, ylim = c(-0.5, 16))
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -718,10 +718,10 @@ w.it.a
 
 
 ## wing length
-hist(SES_wingl)
-plot(SES_wingl, pch = 19, cex = 1.5)
+hist(SES$SES_wingl)
+plot(SES$SES_wingl, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_wingl ~ SES$trmt)
+boxplot(SES$SES_wingl ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -732,10 +732,10 @@ w.wingl.a
 
 
 ## head width
-hist(SES_headw)
-plot(SES_headw, pch = 19, cex = 1.5)
+hist(SES$SES_headw)
+plot(SES$SES_headw, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_headw ~ SES$trmt)
+boxplot(SES$SES_headw ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -746,10 +746,10 @@ w.headw.a
 
 
 ## eye length
-hist(SES_eyel)
-plot(SES_eyel, pch = 19, cex = 1.5)
+hist(SES$SES_eyel)
+plot(SES$SES_eyel, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_eyel ~ SES$trmt)
+boxplot(SES$SES_eyel ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -760,10 +760,10 @@ w.eyel.a
 
 
 ## thorax hair length
-hist(SES_thairl)
-plot(SES_thairl, pch = 19, cex = 1.5, ylim = c(-0.5, 45))
+hist(SES$SES_thairl)
+plot(SES$SES_thairl, pch = 19, cex = 1.5, ylim = c(-0.5, 45))
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_thairl ~ SES$trmt, ylim = c(-0.5, 45))
+boxplot(SES$SES_thairl ~ SES$trmt, ylim = c(-0.5, 45))
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -774,10 +774,10 @@ w.thairl.a
 
 
 ## tibia setae length
-hist(SES_setael)
-plot(SES_setael, pch = 19, cex = 1.5)
+hist(SES$SES_setael)
+plot(SES$SES_setael, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_setael ~ SES$trmt)
+boxplot(SES$SES_setael ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -788,10 +788,10 @@ w.setael.a
 
 
 ## tibia length
-hist(SES_tibial)
-plot(SES_tibial, pch = 19, cex = 1.5)
+hist(SES$SES_tibial)
+plot(SES$SES_tibial, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_tibial ~ SES$trmt)
+boxplot(SES$SES_tibial ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -802,10 +802,10 @@ w.tibial.a
 
 
 ## taxonomic diveristy - beta sor
-hist(SES_bsor)
-plot(SES_bsor, pch = 19, cex = 1.5)
+hist(SES$SES_bsor)
+plot(SES$SES_bsor, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_bsor ~ SES$trmt)
+boxplot(SES$SES_bsor ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -816,10 +816,10 @@ w.bsor.a
 
 
 ## taxonomic diveristy - beta sim
-hist(SES_bsim)
-plot(SES_bsim, pch = 19, cex = 1.5)
+hist(SES$SES_bsim)
+plot(SES$SES_bsim, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_bsim ~ SES$trmt)
+boxplot(SES$SES_bsim ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -830,10 +830,10 @@ w.bsim.a
 
 
 ## taxonomic diveristy - beta sne
-hist(SES_bsne)
-plot(SES_bsne, pch = 19, cex = 1.5)
+hist(SES$SES_bsne)
+plot(SES$SES_bsne, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_bsne ~ SES$trmt)
+boxplot(SES$SES_bsne ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -844,10 +844,10 @@ w.bsne.a
 
 
 ## functional alpha diversity
-hist(SES_falpha)
-plot(SES_falpha, pch = 19, cex = 1.5)
+hist(SES$SES_falpha)
+plot(SES$SES_falpha, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_falpha ~ SES$trmt)
+boxplot(SES$SES_falpha ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -858,10 +858,10 @@ w.falpha.a
 
 
 ## functional beta diversity - beta sor
-hist(SES_fbsor)
-plot(SES_fbsor, pch = 19, cex = 1.5)
+hist(SES$SES_fbsor)
+plot(SES$SES_fbsor, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_fbsor ~ SES$trmt)
+boxplot(SES$SES_fbsor ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -872,10 +872,10 @@ w.fbsor.a
 
 
 ## functional beta diversity - beta sim
-hist(SES_fbsim)
-plot(SES_fbsim, pch = 19, cex = 1.5)
+hist(SES$SES_fbsim)
+plot(SES$SES_fbsim, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_fbsim ~ SES$trmt)
+boxplot(SES$SES_fbsim ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -886,10 +886,10 @@ w.fbsim.a
 
 
 ## functional beta diversity - beta sne
-hist(SES_fbsne)
-plot(SES_fbsne, pch = 19, cex = 1.5)
+hist(SES$SES_fbsne)
+plot(SES$SES_fbsne, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_fbsne ~ SES$trmt)
+boxplot(SES$SES_fbsne ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -900,10 +900,10 @@ w.fbsne.a
 
 
 ## phylogenetic beta diversity - beta sor
-hist(SES_pbsor)
-plot(SES_pbsor, pch = 19, cex = 1.5)
+hist(SES$SES_pbsor)
+plot(SES$SES_pbsor, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_pbsor ~ SES$trmt)
+boxplot(SES$SES_pbsor ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -914,10 +914,10 @@ w.pbsor.a
 
 
 ## phylogenetic beta diversity - beta sim
-hist(SES_pbsim)
-plot(SES_pbsim, pch = 19, cex = 1.5)
+hist(SES$SES_pbsim)
+plot(SES$SES_pbsim, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_pbsim ~ SES$trmt)
+boxplot(SES$SES_pbsim ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -928,10 +928,10 @@ w.pbsim.a
 
 
 ## phylogenetic beta diversity - beta sne
-hist(SES_pbsne)
-plot(SES_pbsne, pch = 19, cex = 1.5)
+hist(SES$SES_pbsne)
+plot(SES$SES_pbsne, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_pbsne ~ SES$trmt)
+boxplot(SES$SES_pbsne ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -1277,30 +1277,9 @@ png("Fig.PLS.png", width = 2200, height = 1000, pointsize = 20)
 par(mfrow=c(1,2)) # one row and two columns
 par(mar=c(5,8,4,2))
 
-#CWM
-plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) CWM Metrics", cex = 1.6, cex.main = 1.8)
-points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
-abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
-text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
-text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
-text(0.19, 0.621, "Urban", pos = 4, font = 1, cex = 1)
-text(-0.48, -0.185, "Natural Habitat", pos = 4, font = 1, cex = 1)
-text(-0.42, 0.069, "LPI Forest", pos = 4, font = 1, cex = 1)
-text(-0.53, -0.10, "ED Forest", pos = 2, font = 1, cex = 1)
-
-text(-0.43, 0.185, "Male Body Length Variance", pos = 3, font = 2, cex = 1)
-text(0.05, 0.644, "Short Tongue", pos = 2, font = 2, cex = 1)
-text(-0.148, -0.577, "Long Tongue", pos = 2, font = 2, cex = 1)
-text(-0.33, -0.08, "Inter-tegular Distance", pos = 3, font = 2, cex = 1)
-text(0.49, 0.064, "Head Width", pos = 2, font = 2, cex = 1)
-text(0.45, 0.197, "Eye Length", pos = 2, font = 2, cex = 1)
-text(0.36, -0.188, "Hair Length", pos = 2, font = 2, cex = 1)
-text(0.31, -0.375, "Corbicula Length", pos = 2, font = 2, cex = 1)
-
 #Diversity
 plot(div_land.red.pred$comp2 ~ div_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(b) Diversity Metrics", cex = 1.6, cex.main = 1.8)
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) Diversity Metrics", cex = 1.6, cex.main = 1.8)
 points(div_land.red.resp$comp2 ~ div_land.red.resp$comp1, pch = 15, cex = 1.6)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(0.69, -0.225, "Landscape Diversity", pos = 2, font = 1, cex = 1)
@@ -1319,5 +1298,26 @@ text(0.35, -0.315, "FA Diversity", pos = 4, font = 2, cex = 1)
 text(-0.347, -0.568, "PB Total", pos = 2, font = 2, cex = 1)
 text(-0.39, -0.11, "PB Turnover", pos = 3, font = 2, cex = 1)
 text(0.375, -0.627, "PB Nestedness", pos = 2, font = 2, cex = 1)
+
+#CWM
+plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(b) CWM Metrics", cex = 1.6, cex.main = 1.8)
+points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
+abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
+text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
+text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
+text(0.19, 0.621, "Urban", pos = 4, font = 1, cex = 1)
+text(-0.48, -0.185, "Natural Habitat", pos = 4, font = 1, cex = 1)
+text(-0.42, 0.069, "LPI Forest", pos = 4, font = 1, cex = 1)
+text(-0.53, -0.10, "ED Forest", pos = 2, font = 1, cex = 1)
+
+text(-0.43, 0.185, "Male Body Length Variance", pos = 3, font = 2, cex = 1)
+text(0.05, 0.644, "Short Tongue", pos = 2, font = 2, cex = 1)
+text(-0.148, -0.577, "Long Tongue", pos = 2, font = 2, cex = 1)
+text(-0.33, -0.08, "Inter-tegular Distance", pos = 3, font = 2, cex = 1)
+text(0.49, 0.064, "Head Width", pos = 2, font = 2, cex = 1)
+text(0.45, 0.197, "Eye Length", pos = 2, font = 2, cex = 1)
+text(0.36, -0.188, "Hair Length", pos = 2, font = 2, cex = 1)
+text(0.31, -0.375, "Corbicula Length", pos = 2, font = 2, cex = 1)
 
 dev.off()
