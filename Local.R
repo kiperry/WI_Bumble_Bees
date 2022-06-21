@@ -592,10 +592,10 @@ str(urban)
 ## now let's compare by treatment
 
 ## Queen body length variance
-hist(SES_qblv)
-plot(SES_qblv, pch = 19, cex = 1.5)
+hist(SES$SES_qblv)
+plot(SES$SES_qblv, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_qblv ~ SES$trmt)
+boxplot(SES$SES_qblv ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -606,10 +606,10 @@ w.qbl_var.a
 
 
 ## Male body length variance
-hist(SES_mblv)
-plot(SES_mblv, pch = 19, cex = 1.5)
+hist(SES$SES_mblv)
+plot(SES$SES_mblv, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_mblv ~ SES$trmt)
+boxplot(SES$SES_mblv ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -620,10 +620,10 @@ w.mbl_var.a
 
 
 ## Worker body length variance
-hist(SES_wblv)
-plot(SES_wblv, pch = 19, cex = 1.5)
+hist(SES$SES_wblv)
+plot(SES$SES_wblv, pch = 19, cex = 1.5)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
-boxplot(SES_wblv ~ SES$trmt)
+boxplot(SES$SES_wblv ~ SES$trmt)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 
 ## compare to null expectations by treatment
@@ -1228,9 +1228,9 @@ plotLoadings(div_land)
 ## run a reduced pls with variables that made the initial 0.3 cutoff
 div_land.red <- pls(land[2:8], SES[,c(16:19,22:25)], mode = c("canonical"), ncomp = 2, scale = TRUE, max.iter = 100)
 div_land.red
-div_land$prop_expl_var
-div_land$loadings
-div_land$loadings.star
+div_land.red$prop_expl_var
+div_land.red$loadings
+div_land.red$loadings.star
 
 plotVar(div_land.red)
 plotLoadings(div_land.red)
@@ -1250,7 +1250,7 @@ div_land.red.resp <- as.data.frame(div_land.red$loadings$Y)
 write.csv(cwm_land.red.resp, file = "div_response_loadings.csv")
 
 plot(div_land.red.pred$comp2 ~ div_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) Diversity Metrics", cex = 1.6)
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) Diversity Metrics", cex = 1.6, cex.main = 2)
 points(div_land.red.resp$comp2 ~ div_land.red.resp$comp1, pch = 15, cex = 1.6)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(0.69, -0.225, "Landscape Diversity", pos = 2, font = 1, cex = 1)
@@ -1279,7 +1279,7 @@ par(mar=c(5,8,4,2))
 
 #CWM
 plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) CWM Metrics", cex = 1.6)
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) CWM Metrics", cex = 1.6, cex.main = 1.8)
 points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
@@ -1300,7 +1300,7 @@ text(0.31, -0.375, "Corbicula Length", pos = 2, font = 2, cex = 1)
 
 #Diversity
 plot(div_land.red.pred$comp2 ~ div_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(b) Diversity Metrics", cex = 1.6)
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(b) Diversity Metrics", cex = 1.6, cex.main = 1.8)
 points(div_land.red.resp$comp2 ~ div_land.red.resp$comp1, pch = 15, cex = 1.6)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(0.69, -0.225, "Landscape Diversity", pos = 2, font = 1, cex = 1)
@@ -1311,13 +1311,13 @@ text(0.17, -0.30, "LPI Forest", pos = 3, font = 1, cex = 1)
 text(0.029, -0.54, "ED Forest", pos = 4, font = 1, cex = 1)
 text(-0.09, 0.518, "ENN Forest", pos = 2, font = 1, cex = 1)
 
-text(-0.395, -0.128, "TBsor", pos = 2, font = 2, cex = 1)
-text(-0.38, -0.115, "TBsim", pos = 4, font = 2, cex = 1)
-text(0.40, 0.069, "TBsne", pos = 2, font = 2, cex = 1)
-text(-0.065, 0.363, "FBsor", pos = 2, font = 2, cex = 1)
-text(0.35, -0.31, "Falpha", pos = 2, font = 2, cex = 1)
-text(-0.347, -0.568, "PBsor", pos = 2, font = 2, cex = 1)
-text(-0.39, -0.11, "PBsim", pos = 3, font = 2, cex = 1)
-text(0.375, -0.627, "PBsne", pos = 2, font = 2, cex = 1)
+text(-0.395, -0.128, "TB Total", pos = 2, font = 2, cex = 1)
+text(-0.38, -0.115, "TB Turnover", pos = 4, font = 2, cex = 1)
+text(0.40, 0.069, "TB Nestedness", pos = 2, font = 2, cex = 1)
+text(-0.065, 0.363, "FB Total", pos = 2, font = 2, cex = 1)
+text(0.35, -0.315, "FA Diversity", pos = 4, font = 2, cex = 1)
+text(-0.347, -0.568, "PB Total", pos = 2, font = 2, cex = 1)
+text(-0.39, -0.11, "PB Turnover", pos = 3, font = 2, cex = 1)
+text(0.375, -0.627, "PB Nestedness", pos = 2, font = 2, cex = 1)
 
 dev.off()
