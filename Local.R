@@ -1317,7 +1317,7 @@ text(-0.148, -0.577, "Long Tongue", pos = 2, font = 2, cex = 1)
 text(-0.33, -0.08, "Inter-tegular Distance", pos = 3, font = 2, cex = 1)
 text(0.49, 0.064, "Head Width", pos = 2, font = 2, cex = 1)
 text(0.45, 0.197, "Eye Length", pos = 2, font = 2, cex = 1)
-text(0.36, -0.188, "Hair Length", pos = 2, font = 2, cex = 1)
+text(0.36, -0.188, "Thorax Hair Length", pos = 2, font = 2, cex = 1)
 text(0.31, -0.375, "Corbicula Length", pos = 2, font = 2, cex = 1)
 
 dev.off()
