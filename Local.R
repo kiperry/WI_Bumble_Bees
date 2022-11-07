@@ -1007,34 +1007,126 @@ dev.off()
 
 
 # Phylogenetic beta-diversity
-png("L_SES_PDiv.png", width = 2500, height = 1000, pointsize = 30)
+png("L_SES_PDiv.png", width = 2800, height = 1000, pointsize = 30)
 
 par(mfrow=c(1,3))
 par(mar=c(5,8,4,2))
 
 boxplot(SES$SES_pbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
-        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(a) Total Beta-Diversity", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,4), outline = FALSE)
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 1.8, cex.axis = 1.5, ylim = c(-1,4), outline = FALSE)
 stripchart(SES$SES_pbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.65, 4, "(a)", pos = 2, font = 2, cex = 2)
 
 boxplot(SES$SES_pbsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
-        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(b) Turnover", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,4), outline = FALSE)
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Phylogenetic Beta-diversity", cex.main = 2,
+        cex.lab = 1.8, cex.axis = 1.5, ylim = c(-1,4), outline = FALSE)
 stripchart(SES$SES_pbsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.65, 4, "(b)", pos = 2, font = 2, cex = 2)
 
 boxplot(SES$SES_pbsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
-        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "(c) Nestedness", cex.main = 2,
-        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-1,4), outline = FALSE)
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 1.8, cex.axis = 1.5, ylim = c(-1,4), outline = FALSE)
 stripchart(SES$SES_pbsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.65, 4, "(c)", pos = 2, font = 2, cex = 2)
 
 
 dev.off()
+
+
+
+# All three together
+png("Local.SES.png", width = 2800, height = 3000, pointsize = 30)
+
+par(mfrow=c(3,3))
+par(mar=c(5,8,4,2))
+
+#Taxonomic
+boxplot(SES$SES_bsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_bsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.8, 4, "Total", pos = 2, font = 2, cex = 2)
+
+boxplot(SES$SES_bsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Taxonomic", cex.main = 2.5,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_bsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.73, 3.8, "Turnover", pos = 3, font = 2, cex = 2)
+
+boxplot(SES$SES_bsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_bsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.82, 3.8, "Nestedness", pos = 3, font = 2, cex = 2)
+
+
+#Functional
+boxplot(SES$SES_fbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_fbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.8, 4, "Total", pos = 2, font = 2, cex = 2)
+
+boxplot(SES$SES_fbsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Functional", cex.main = 2.5,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_fbsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.73, 3.8, "Turnover", pos = 3, font = 2, cex = 2)
+
+boxplot(SES$SES_fbsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_fbsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.82, 3.8, "Nestedness", pos = 3, font = 2, cex = 2)
+
+
+#Phylogenetic
+boxplot(SES$SES_pbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_pbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.8, 4, "Total", pos = 2, font = 2, cex = 2)
+
+boxplot(SES$SES_pbsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Phylogenetic", cex.main = 2.5,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_pbsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.73, 3.8, "Turnover", pos = 3, font = 2, cex = 2)
+
+boxplot(SES$SES_pbsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-2,4), outline = FALSE)
+stripchart(SES$SES_pbsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.82, 3.8, "Nestedness", pos = 3, font = 2, cex = 2)
+
+
+dev.off()
+
 
 #####################################################################################################
 ### figure panel - all diversity indices
@@ -1081,14 +1173,17 @@ SES_div.m$metric <- factor(SES_div.m$metric, levels = c("Taxonomic", "Functional
 
 png("SES_Div_Local.png", width = 2000, height = 1000, pointsize = 20)
 
-ggplot(SES_div.m, aes(x=ses, y=var, fill = var)) +
+ggplot(SES_div.m, aes(x=ses, y=var, group = var, fill = var)) +
   geom_boxplot(outlier.shape = NA) +
-  geom_dotplot(position = position_jitter(width = 0.2, height = 0.2),
+  geom_dotplot(
+               stackdir = "center",
+               #stackdir = "center",
+               position = position_jitter(width = 0.2, height = 0.2),
                dotsize = 2,
                binaxis = "y",
-               stackdir = "center") +
+               binwidth = 0.1) +
   facet_grid(metric ~ trmt) + 
-  coord_cartesian(xlim = c(-1, 3)) +
+  coord_cartesian(xlim = c(-5, 5)) +
   theme_few() +
   theme(text = element_text(size = 24, color = "black"),
         axis.text.x = element_text(color = "black"),
@@ -1302,6 +1397,35 @@ text(0.375, -0.627, "PB Nestedness", pos = 2, font = 2, cex = 1)
 #CWM
 plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
      xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(b) CWM Metrics", cex = 1.6, cex.main = 1.8)
+points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
+abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
+text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
+text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
+text(0.19, 0.621, "Urban", pos = 4, font = 1, cex = 1)
+text(-0.48, -0.185, "Natural Habitat", pos = 4, font = 1, cex = 1)
+text(-0.42, 0.069, "LPI Forest", pos = 4, font = 1, cex = 1)
+text(-0.53, -0.10, "ED Forest", pos = 2, font = 1, cex = 1)
+
+text(-0.43, 0.185, "Male Body Length Variance", pos = 3, font = 2, cex = 1)
+text(0.05, 0.644, "Short Tongue", pos = 2, font = 2, cex = 1)
+text(-0.148, -0.577, "Long Tongue", pos = 2, font = 2, cex = 1)
+text(-0.33, -0.08, "Inter-tegular Distance", pos = 3, font = 2, cex = 1)
+text(0.49, 0.064, "Head Width", pos = 2, font = 2, cex = 1)
+text(0.45, 0.197, "Eye Length", pos = 2, font = 2, cex = 1)
+text(0.36, -0.188, "Thorax Hair Length", pos = 2, font = 2, cex = 1)
+text(0.31, -0.375, "Corbicula Length", pos = 2, font = 2, cex = 1)
+
+dev.off()
+
+
+# Make CWM figure only
+png("Fig.PLS.CWM.png", width = 1200, height = 1000, pointsize = 20)
+
+par(mar=c(5,5,4,2))
+
+#CWM
+plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", cex = 1.6, cex.main = 1.8)
 points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
