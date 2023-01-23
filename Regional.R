@@ -1774,3 +1774,46 @@ ggplot(SES_cwm.m, aes(x=ses, y=cwm, fill = cwm)) +
   scale_fill_viridis(alpha = 0.7, discrete = TRUE, option = "D")
 
   dev.off()
+  
+#########################################################################################################
+  
+### figure panel - Total diversity indices
+  
+SES$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+  
+levels(SES$trmt)[levels(SES$trmt)=="U"] <- "Urban"
+levels(SES$trmt)[levels(SES$trmt)=="A"] <- "Agriculture"
+
+SES$trmt <- as.factor(SES$trmt)
+str(SES)
+
+# Total beta-diversity
+png("R_SES_TotalDiv.png", width = 2500, height = 1000, pointsize = 30)
+
+par(mfrow=c(1,3))
+par(mar=c(5,8,4,2))
+
+boxplot(SES$SES_bsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Taxonomic", cex.main = 2,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-12,5), outline = FALSE)
+stripchart(SES$SES_bsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+boxplot(SES$SES_fbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Functional", cex.main = 2,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-12,5), outline = FALSE)
+stripchart(SES$SES_fbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+boxplot(SES$SES_pbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Phylogenetic", cex.main = 2,
+        cex.lab = 1.6, cex.axis = 1.2, ylim = c(-12,5), outline = FALSE)
+stripchart(SES$SES_pbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+
+dev.off()
