@@ -44,29 +44,39 @@ t2 <- t2[,-9]#pollen transport
 plot(t2)
 cor(t2, method = c("pearson"), use = "complete.obs")
 
-#highly correlated with other traits
-t2 <- t2[,-21]#wt
-
-t2 <- t2[,-20]#corbicula width
-
-t2 <- t2[,-10]#wing marginal cell length (keeping inter-tegular distance)
-t2 <- t2[,-10]#wing width
-
-t2 <- t2[,-12]#eye width
-
-plot(t2)
-cor(t2, method = c("pearson"), use = "complete.obs")
-
 #remove the body size variables from the literature except body length variances
 #these are correlated with each other and several other traits
 t2 <- t2[,-1]#average queen body length
 t2 <- t2[,-2]#average male body length
 t2 <- t2[,-3]#average worker body length
 
+#highly correlated with other traits
+t2 <- t2[,-18]#wt
+
 plot(t2)
+
+library(ggplot2)
+library(GGally)
+
+ggpairs(t2, upper = list(continuous = wrap("cor", size = 5, color = "black")))
 cor(t2, method = c("pearson"), use = "complete.obs")
+
+# Pairplot
+png("Corplot_Regional.png", width = 1800, height = 1000, pointsize = 40)
+ggpairs(t2, upper = list(continuous = wrap("cor", size = 5, color = "black")))
+dev.off()
+
+t2 <- t2[,-17]#corbicula width
+
+t2 <- t2[,-7]#wing marginal cell length (keeping inter-tegular distance)
+t2 <- t2[,-7]#wing width
+
+t2 <- t2[,-9]#eye width
+
 t2 <- t2[,-10] #scape length
 #will group other traits on head to limit their influence with functional diversity
+
+ggpairs(t2)
 
 #copy dataset in case transformations are needed
 t3 <- t2
@@ -116,6 +126,7 @@ t3$rbtl <- log(t3$rbtl + 1)
 
 ## Phylogenetic data
 library(ape)
+citation("ape")
 library(phytools)
 library(phylotools)
 
