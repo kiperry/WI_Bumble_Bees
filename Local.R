@@ -1175,15 +1175,13 @@ png("SES_Div_Local.png", width = 2000, height = 1000, pointsize = 20)
 
 ggplot(SES_div.m, aes(x=ses, y=var, group = var, fill = var)) +
   geom_boxplot(outlier.shape = NA) +
-  geom_dotplot(
-               stackdir = "center",
-               #stackdir = "center",
+  geom_dotplot(stackdir = "center",
                position = position_jitter(width = 0.2, height = 0.2),
                dotsize = 2,
                binaxis = "y",
                binwidth = 0.1) +
   facet_grid(metric ~ trmt) + 
-  coord_cartesian(xlim = c(-5, 5)) +
+  coord_cartesian(xlim = c(-3, 3)) +
   theme_few() +
   theme(text = element_text(size = 24, color = "black"),
         axis.text.x = element_text(color = "black"),
