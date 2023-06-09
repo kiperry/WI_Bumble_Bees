@@ -1286,9 +1286,9 @@ write.csv(cwm_land.red.pred, file = "cwm_predictor_loadings.csv")
 cwm_land.red.resp <- as.data.frame(cwm_land.red$loadings$Y)
 write.csv(cwm_land.red.resp, file = "cwm_response_loadings.csv")
 
-plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) CWM Metrics", cex = 1.6)
-points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
+plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 1, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "black",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) CWM Metrics", cex = 2)
+points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 2)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
 text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
@@ -1371,9 +1371,9 @@ par(mfrow=c(1,2)) # one row and two columns
 par(mar=c(5,8,4,2))
 
 #Diversity
-plot(div_land.red.pred$comp2 ~ div_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) Diversity Metrics", cex = 1.6, cex.main = 1.8)
-points(div_land.red.resp$comp2 ~ div_land.red.resp$comp1, pch = 15, cex = 1.6)
+plot(div_land.red.pred$comp2 ~ div_land.red.pred$comp1, pch = 21, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(a) Diversity Metrics", cex = 2, cex.main = 1.8)
+points(div_land.red.resp$comp2 ~ div_land.red.resp$comp1, pch = 15, cex = 2)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(0.69, -0.225, "Landscape Diversity", pos = 2, font = 1, cex = 1)
 text(-0.52, -0.278, "Agriculture", pos = 4, font = 1, cex = 1)
@@ -1393,9 +1393,9 @@ text(-0.39, -0.11, "PB Turnover", pos = 3, font = 2, cex = 1)
 text(0.375, -0.627, "PB Nestedness", pos = 2, font = 2, cex = 1)
 
 #CWM
-plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(b) CWM Metrics", cex = 1.6, cex.main = 1.8)
-points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
+plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 21, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", main = "(b) CWM Metrics", cex = 2, cex.main = 1.8)
+points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 2)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
 text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
@@ -1422,9 +1422,9 @@ png("Fig.PLS.CWM.png", width = 1200, height = 1000, pointsize = 20)
 par(mar=c(5,5,4,2))
 
 #CWM
-plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 19, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "gray47",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", cex = 1.6, cex.main = 1.8)
-points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 1.6)
+plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 1, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "black",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", cex = 2, cex.main = 1.8, lwd = 2)
+points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 2)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
 text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
 text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
