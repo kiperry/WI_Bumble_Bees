@@ -58,12 +58,14 @@ plot(t2)
 library(ggplot2)
 library(GGally)
 
-ggpairs(t2, upper = list(continuous = wrap("cor", size = 5, color = "black")))
+cp <- ggpairs(t2, upper = list(continuous = wrap("cor", size = 5, color = "black")))
+cp + theme(strip.text.x = element_text(size = 18), strip.text.y = element_text(size = 10))
 cor(t2, method = c("pearson"), use = "complete.obs")
 
-# Pairplot
+# Pairplot - for Appendix
 png("Corplot_Regional.png", width = 1800, height = 1000, pointsize = 40)
-ggpairs(t2, upper = list(continuous = wrap("cor", size = 5, color = "black")))
+cp <- ggpairs(t2, upper = list(continuous = wrap("cor", size = 5, color = "black")))
+cp + theme(strip.text.x = element_text(size = 23), strip.text.y = element_text(size = 12))
 dev.off()
 
 t2 <- t2[,-17]#corbicula width
