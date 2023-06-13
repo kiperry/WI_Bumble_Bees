@@ -1742,8 +1742,99 @@ ggplot(SES_div.m, aes(x=ses, y=var, fill = var)) +
 
 dev.off()
 
-  
-  
+## Figure panel version 2
+
+SES$trmt <- c("Urban", "Agriculture", "Urban", "Urban", "Urban", "Agriculture", "Agriculture",
+              "Urban", "Agriculture", "Urban", "Urban", "Urban", "Urban", "Agriculture", "Urban",
+              "Agriculture", "Urban", "Urban", "Agriculture", "Agriculture")
+str(SES)
+SES$trmt <- as.factor(SES$trmt)
+str(SES)
+
+# All three together
+png("Regional.SES.png", width = 2800, height = 3000, pointsize = 30)
+
+par(mfrow=c(3,3))
+par(mar=c(5,8,4,2))
+
+#Taxonomic
+boxplot(SES$SES_bsor ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_bsor ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.8, 11.5, "Total", pos = 2, font = 2, cex = 2)
+
+boxplot(SES$SES_bsim ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Taxonomic", cex.main = 2.5,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_bsim ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.73, 10.8, "Turnover", pos = 3, font = 2, cex = 2)
+
+boxplot(SES$SES_bsne ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_bsne ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.82, 10.8, "Nestedness", pos = 3, font = 2, cex = 2)
+
+#Phylogenetic
+boxplot(SES$SES_pbsor ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_pbsor ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.8, 11.5, "Total", pos = 2, font = 2, cex = 2)
+
+boxplot(SES$SES_pbsim ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Phylogenetic", cex.main = 2.5,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_pbsim ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.73, 10.8, "Turnover", pos = 3, font = 2, cex = 2)
+
+boxplot(SES$SES_pbsne ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_pbsne ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.82, 10.8, "Nestedness", pos = 3, font = 2, cex = 2)
+
+#Functional
+boxplot(SES$SES_fbsor ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_fbsor ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.8, 11.5, "Total", pos = 2, font = 2, cex = 2)
+
+boxplot(SES$SES_fbsim ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Functional", cex.main = 2.5,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_fbsim ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.73, 10.8, "Turnover", pos = 3, font = 2, cex = 2)
+
+boxplot(SES$SES_fbsne ~ trmt, data = SES, col = c("gray60", "orchid"),
+        ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
+        cex.lab = 2.2, cex.axis = 1.5, ylim = c(-12,12), outline = FALSE)
+stripchart(SES$SES_fbsne ~ trmt, data = SES, col = c("gray28", "orchid4"), vertical = TRUE,
+           pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+text(0.82, 10.8, "Nestedness", pos = 3, font = 2, cex = 2)
+
+dev.off()
+
+
 ### figure panel - all CWMs
 
 SES_cwm <- cbind(SES_qblv, SES_mblv, SES_wblv, SES_it, SES_tl_0, SES_tl_1, SES_tl_2, SES_nest0, SES_nest1,
