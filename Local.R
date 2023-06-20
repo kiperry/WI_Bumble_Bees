@@ -1421,24 +1421,34 @@ png("Fig.PLS.CWM.png", width = 1200, height = 1000, pointsize = 20)
 par(mar=c(5,5,4,2))
 
 #CWM
-plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 1, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "black",
-     xlab = "PLS Axis 1", ylab = "PLS Axis 2", cex = 2, cex.main = 1.8, lwd = 2)
-points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 2)
+plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 20, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "black",
+     xlab = "PLS Axis 1", ylab = "PLS Axis 2", cex = 0.01, cex.main = 1.8, lwd = 0.5)
+arrows(0,0,-0.5248468,0.40167777, lwd = 2)
+arrows(0,0,0.0317300,-0.63031485, lwd = 2)
+arrows(0,0,0.1817020,0.62470817, lwd = 2)
+arrows(0,0,-0.4836831,-0.18743548, lwd = 2)
+arrows(0,0,-0.4238401,0.06875118, lwd = 2)
+arrows(0,0,-0.5262354,-0.10601451, lwd = 2)
 abline(h = 0.0, v = 0.0, col = "black", lwd = 1, lty=1)
-text(-0.52, 0.402, "Landscape Diversity", pos = 4, font = 1, cex = 1)
-text(0.04, -0.63, "Agriculture", pos = 4, font = 1, cex = 1)
-text(0.19, 0.621, "Urban", pos = 4, font = 1, cex = 1)
-text(-0.48, -0.185, "Natural Habitat", pos = 4, font = 1, cex = 1)
-text(-0.42, 0.069, "LPI Forest", pos = 4, font = 1, cex = 1)
+points(cwm_land.red.resp$comp2 ~ cwm_land.red.resp$comp1, pch = 15, cex = 2)
+
+#plot(cwm_land.red.pred$comp2 ~ cwm_land.red.pred$comp1, pch = 1, ylim = c(-0.7, 0.7), xlim = c(-0.7, 0.7), col = "black",
+     #xlab = "PLS Axis 1", ylab = "PLS Axis 2", cex = 2, cex.main = 1.8, lwd = 2)
+
+text(-0.52, 0.402, "Landscape Diversity", pos = 3, font = 1, cex = 1)
+text(0.04, -0.63, "Agriculture", pos = 1, font = 1, cex = 1)
+text(0.19, 0.621, "Urban", pos = 3, font = 1, cex = 1)
+text(-0.48, -0.185, "Natural Habitat", pos = 2, font = 1, cex = 1)
+text(-0.42, 0.069, "LPI Forest", pos = 2, font = 1, cex = 1)
 text(-0.53, -0.10, "ED Forest", pos = 2, font = 1, cex = 1)
 
-text(-0.43, 0.185, "Male Body Length Variance", pos = 3, font = 2, cex = 1)
+text(-0.43, 0.185, "Male Body Length Range", pos = 3, font = 2, cex = 1)
 text(0.05, 0.644, "Short Tongue", pos = 2, font = 2, cex = 1)
 text(-0.148, -0.577, "Long Tongue", pos = 2, font = 2, cex = 1)
 text(-0.33, -0.08, "Inter-tegular Distance", pos = 3, font = 2, cex = 1)
 text(0.49, 0.064, "Head Width", pos = 2, font = 2, cex = 1)
 text(0.45, 0.197, "Eye Length", pos = 2, font = 2, cex = 1)
-text(0.36, -0.188, "Thorax Hair Length", pos = 2, font = 2, cex = 1)
-text(0.31, -0.375, "Corbicula Length", pos = 2, font = 2, cex = 1)
+text(0.36, -0.178, "Thorax Hair Length", pos = 3, font = 2, cex = 1)
+text(0.31, -0.365, "Corbicula Length", pos = 3, font = 2, cex = 1)
 
 dev.off()
