@@ -1742,6 +1742,7 @@ ggplot(SES_div.m, aes(x=ses, y=var, fill = var)) +
 
 dev.off()
 
+#########################################################################################
 ## Figure panel version 2
 
 # load the dataset
@@ -1768,6 +1769,8 @@ stripchart(SES$SES_bsor ~ trmt, data = SES, col = c("gray28", "orchid4"), vertic
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.8, 11.5, "Total", pos = 2, font = 2, cex = 2)
+text(1.1, -7, "**", pos = 2, font = 2, cex = 3)
+text(2.13, -7, "***", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_bsim ~ trmt, data = SES, col = c("gray60", "orchid"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Taxonomic", cex.main = 2.5,
@@ -1776,6 +1779,8 @@ stripchart(SES$SES_bsim ~ trmt, data = SES, col = c("gray28", "orchid4"), vertic
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.73, 10.8, "Turnover", pos = 3, font = 2, cex = 2)
+text(1.1, -7, "**", pos = 2, font = 2, cex = 3)
+text(2.13, -7, "***", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_bsne ~ trmt, data = SES, col = c("gray60", "orchid"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
@@ -1784,6 +1789,8 @@ stripchart(SES$SES_bsne ~ trmt, data = SES, col = c("gray28", "orchid4"), vertic
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.82, 10.8, "Nestedness", pos = 3, font = 2, cex = 2)
+text(1.1, 9.5, "**", pos = 2, font = 2, cex = 3)
+text(2.13, 9.5, "***", pos = 2, font = 2, cex = 3)
 
 #Phylogenetic
 boxplot(SES$SES_pbsor ~ trmt, data = SES, col = c("gray60", "orchid"),
@@ -1793,6 +1800,8 @@ stripchart(SES$SES_pbsor ~ trmt, data = SES, col = c("gray28", "orchid4"), verti
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.8, 11.5, "Total", pos = 2, font = 2, cex = 2)
+text(1.1, -2, "**", pos = 2, font = 2, cex = 3)
+text(2.13, -2, "***", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_pbsim ~ trmt, data = SES, col = c("gray60", "orchid"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Phylogenetic", cex.main = 2.5,
@@ -1801,6 +1810,8 @@ stripchart(SES$SES_pbsim ~ trmt, data = SES, col = c("gray28", "orchid4"), verti
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.73, 10.8, "Turnover", pos = 3, font = 2, cex = 2)
+text(1.1, -2, "**", pos = 2, font = 2, cex = 3)
+text(2.13, -2, "***", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_pbsne ~ trmt, data = SES, col = c("gray60", "orchid"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
@@ -1809,6 +1820,8 @@ stripchart(SES$SES_pbsne ~ trmt, data = SES, col = c("gray28", "orchid4"), verti
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.82, 10.8, "Nestedness", pos = 3, font = 2, cex = 2)
+text(1.1, 5.5, "**", pos = 2, font = 2, cex = 3)
+text(2.13, 5.5, "***", pos = 2, font = 2, cex = 3)
 
 #Functional
 boxplot(SES$SES_fbsor ~ trmt, data = SES, col = c("gray60", "orchid"),
@@ -1818,6 +1831,8 @@ stripchart(SES$SES_fbsor ~ trmt, data = SES, col = c("gray28", "orchid4"), verti
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.8, 11.5, "Total", pos = 2, font = 2, cex = 2)
+text(1.1, 1, "**", pos = 2, font = 2, cex = 3)
+text(2.13, -1.5, "***", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_fbsim ~ trmt, data = SES, col = c("gray60", "orchid"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Functional", cex.main = 2.5,
@@ -1826,6 +1841,8 @@ stripchart(SES$SES_fbsim ~ trmt, data = SES, col = c("gray28", "orchid4"), verti
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.73, 10.8, "Turnover", pos = 3, font = 2, cex = 2)
+text(1.1, 0.5, "**", pos = 2, font = 2, cex = 3)
+text(2.13, 0.5, "***", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_fbsne ~ trmt, data = SES, col = c("gray60", "orchid"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
@@ -1834,6 +1851,7 @@ stripchart(SES$SES_fbsne ~ trmt, data = SES, col = c("gray28", "orchid4"), verti
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.82, 10.8, "Nestedness", pos = 3, font = 2, cex = 2)
+text(2.13, 1, "***", pos = 2, font = 2, cex = 3)
 
 dev.off()
 

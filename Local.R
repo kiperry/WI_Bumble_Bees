@@ -1080,6 +1080,8 @@ stripchart(SES$SES_pbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), v
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.8, 4, "Total", pos = 2, font = 2, cex = 2)
+text(1.1, 3.5, "**", pos = 2, font = 2, cex = 3)
+text(2.1, 1.5, "**", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_pbsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Phylogenetic", cex.main = 2.5,
@@ -1088,6 +1090,7 @@ stripchart(SES$SES_pbsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), v
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.73, 3.8, "Turnover", pos = 3, font = 2, cex = 2)
+text(1.07, 3.5, "*", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_pbsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
@@ -1096,6 +1099,8 @@ stripchart(SES$SES_pbsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), v
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.82, 3.8, "Nestedness", pos = 3, font = 2, cex = 2)
+text(1.1, 3.3, "**", pos = 2, font = 2, cex = 3)
+text(2.1, 3.3, "**", pos = 2, font = 2, cex = 3)
 
 #Functional
 boxplot(SES$SES_fbsor ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
@@ -1105,6 +1110,7 @@ stripchart(SES$SES_fbsor ~ trmt, data = SES, col = c("gray28", "aquamarine4"), v
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.8, 4, "Total", pos = 2, font = 2, cex = 2)
+text(1.07, 2.2, "*", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_fbsim ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", main = "Functional", cex.main = 2.5,
@@ -1113,6 +1119,7 @@ stripchart(SES$SES_fbsim ~ trmt, data = SES, col = c("gray28", "aquamarine4"), v
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.73, 3.8, "Turnover", pos = 3, font = 2, cex = 2)
+text(2.07, 0.3, "*", pos = 2, font = 2, cex = 3)
 
 boxplot(SES$SES_fbsne ~ trmt, data = SES, col = c("gray60", "aquamarine3"),
         ylab = "Standardized Effect Sizes (SES)", xlab = "", cex.main = 2,
@@ -1121,6 +1128,7 @@ stripchart(SES$SES_fbsne ~ trmt, data = SES, col = c("gray28", "aquamarine4"), v
            pch = 19, cex = 2, add = TRUE, method = "jitter", jitter = 0.2)
 abline(h = 0.0, col = "black", lwd = 3, lty=2)
 text(0.82, 3.8, "Nestedness", pos = 3, font = 2, cex = 2)
+text(2.1, 1.9, "**", pos = 2, font = 2, cex = 3)
 
 dev.off()
 
