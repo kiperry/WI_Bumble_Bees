@@ -5,6 +5,7 @@
 # Step 2: Urban/Agricultural Pools to Local Greenspaces
 # Revised analysis with unconstrained null model (maintains species richness, but
 # not species frequency)
+# And local null model without the trait shuffle randomization
 #
 # Community Trait Means
 # Taxonomic Diversity
