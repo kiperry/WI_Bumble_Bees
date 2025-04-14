@@ -257,28 +257,6 @@ bb.pcore <- phylo.betapart.core(a, p4)
 bb.phy <- phylo.beta.pair(bb.pcore, index.family = "sorensen")
 str(bb.phy)
 
-# calculate phylogenetic signals for traits
-# Blomberg's K (Blomberg, Garland, and Ives 2003)
-
-# create an empty dataframe to store the values for each trait
-physig <- matrix(NA, nrow = 1, ncol = 10)
-colnames(physig) <- c("qbl_var", "mbl_var", "wbl_var", "it", "rwingl", "rheadw", "reyel", "thairl",
-                      "bsetael", "rbtl")
-
-physig[,1] <- phylosig(p4, t3$qbl_var, method = "K")
-physig[,2] <- phylosig(p4, t3$mbl_var, method = "K")
-physig[,3] <- phylosig(p4, t3$wbl_var, method = "K")
-physig[,4] <- phylosig(p4, t3$it, method = "K")
-physig[,5] <- phylosig(p4, t3$rwingl, method = "K")
-physig[,6] <- phylosig(p4, t3$rheadw, method = "K")
-physig[,7] <- phylosig(p4, t3$reyel, method = "K")
-physig[,8] <- phylosig(p4, t3$thairl, method = "K")
-physig[,9] <- phylosig(p4, t3$bsetael, method = "K")
-physig[,10] <- phylosig(p4, t3$rbtl, method = "K")
-
-# needs to be a data frame for use later
-physig <- as.data.frame(physig)
-
 ################################################################################
 # test randomization code to make sure it is working correctly
 # single iteration of the null model
@@ -479,4 +457,1091 @@ nfsor <- read.csv("Regional_to_Urban_2Axes_NoTraitShuffle/bb_fbeta_sor.csv", row
 npsim <- read.csv("Regional_to_Urban_2Axes_NoTraitShuffle/bb_pbeta_sim.csv", row.names=1)
 npsne <- read.csv("Regional_to_Urban_2Axes_NoTraitShuffle/bb_pbeta_sne.csv", row.names=1)
 npsor <- read.csv("Regional_to_Urban_2Axes_NoTraitShuffle/bb_pbeta_sor.csv", row.names=1)
-npsig <- read.csv("Regional_to_Urban_2Axes_NoTraitShuffle/bb_phylo_signal.csv", row.names=1)
+
+#########################################################################################################################
+## Calculate Standardized Effect Sizes
+
+# Community weighted means
+cwm.obs.m <- as.matrix(t(colMeans(cwm.obs)))
+
+## queen body length variance
+SES_qblv <- (cwm.obs$qbl_var - apply(nqbl_var, MARGIN = 1, mean)) / apply(nqbl_var, MARGIN = 1, sd, na.rm=T)
+SES_qblv
+
+boxplot(SES_qblv)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_qblv, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nqbl_var), main = "Distribution of expected values - Queen Body Length Variance")
+abline(v = cwm.obs.m[,1], col = "blue", lwd = 2)
+
+pval.qblv <- apply(cbind(cwm.obs$qbl_var, nqbl_var), MARGIN = 1, rank)[1,] / 1000
+pval.qblv
+qblv <- cbind(cwm.obs$qbl_var, nqbl_var)
+qblv.m <- as.matrix(t(colMeans(qblv)))
+pval.qblv.a <- apply(qblv.m, MARGIN = 1, rank)[1,] / 1000
+pval.qblv.a
+
+w.qbl_var <- wilcox.test(SES_qblv, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.qbl_var
+
+
+## male body length variance
+SES_mblv <- (cwm.obs$mbl_var - apply(nmbl_var, MARGIN = 1, mean)) / apply(nmbl_var, MARGIN = 1, sd, na.rm=T)
+SES_mblv
+
+boxplot(SES_mblv)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_mblv, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nmbl_var), main = "Distribution of expected values - Male Body Length Variance")
+abline(v = cwm.obs.m[,2], col = "blue", lwd = 2)
+
+pval.mblv <- apply(cbind(cwm.obs$mbl_var, nmbl_var), MARGIN = 1, rank)[1,] / 1000
+pval.mblv
+mblv <- cbind(cwm.obs$mbl_var, nmbl_var)
+mblv.m <- as.matrix(t(colMeans(mblv)))
+pval.mblv.a <- apply(mblv.m, MARGIN = 1, rank)[1,] / 1000
+pval.mblv.a
+
+w.mbl_var <- wilcox.test(SES_mblv, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.mbl_var
+
+
+## worker body length variance
+SES_wblv <- (cwm.obs$wbl_var - apply(nwbl_var, MARGIN = 1, mean)) / apply(nwbl_var, MARGIN = 1, sd, na.rm=T)
+SES_wblv
+
+boxplot(SES_wblv, ylim = c(-0.5, 2))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_wblv, pch = 19, cex = 1.5, ylim = c(-0.5, 2))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nwbl_var), main = "Distribution of expected values - Worker Body Length Variance")
+abline(v = cwm.obs.m[,3], col = "blue", lwd = 2)
+
+pval.wblv <- apply(cbind(cwm.obs$wbl_var, nwbl_var), MARGIN = 1, rank)[1,] / 1000
+pval.wblv
+wblv <- cbind(cwm.obs$wbl_var, nwbl_var)
+wblv.m <- as.matrix(t(colMeans(wblv)))
+pval.wblv.a <- apply(wblv.m, MARGIN = 1, rank)[1,] / 1000
+pval.wblv.a
+
+w.wbl_var <- wilcox.test(SES_wblv, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.wbl_var
+
+
+## tongue length - short
+SES_tl_0 <- (cwm.obs$tl_0 - apply(ntl_0, MARGIN = 1, mean)) / apply(ntl_0, MARGIN = 1, sd, na.rm=T)
+SES_tl_0
+
+boxplot(SES_tl_0)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_tl_0, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(ntl_0), main = "Distribution of expected values - Tongue Length")
+abline(v = cwm.obs.m[,4], col = "blue", lwd = 2)
+
+pval.tl_0 <- apply(cbind(cwm.obs$tl_0, ntl_0), MARGIN = 1, rank)[1,] / 1000
+pval.tl_0
+tl_0 <- cbind(cwm.obs$tl_0, ntl_0)
+tl_0.m <- as.matrix(t(colMeans(tl_0)))
+pval.tl_0.a <- apply(tl_0.m, MARGIN = 1, rank)[1,] / 1000
+pval.tl_0.a
+
+w.tl_0 <- wilcox.test(SES_tl_0, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl_0
+
+
+## tongue length - medium
+SES_tl_1 <- (cwm.obs$tl_1 - apply(ntl_1, MARGIN = 1, mean)) / apply(ntl_1, MARGIN = 1, sd, na.rm=T)
+SES_tl_1
+
+boxplot(SES_tl_1)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_tl_1, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(ntl_1), main = "Distribution of expected values - Tongue Length")
+abline(v = cwm.obs.m[,5], col = "blue", lwd = 2)
+
+pval.tl_1 <- apply(cbind(cwm.obs$tl_1, ntl_1), MARGIN = 1, rank)[1,] / 1000
+pval.tl_1
+tl_1 <- cbind(cwm.obs$tl_1, ntl_1)
+tl_1.m <- as.matrix(t(colMeans(tl_1)))
+pval.tl_1.a <- apply(tl_1.m, MARGIN = 1, rank)[1,] / 1000
+pval.tl_1.a
+
+w.tl_1 <- wilcox.test(SES_tl_1, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl_1
+
+
+## tongue length - long
+SES_tl_2 <- (cwm.obs$tl_2 - apply(ntl_2, MARGIN = 1, mean)) / apply(ntl_2, MARGIN = 1, sd, na.rm=T)
+SES_tl_2
+
+boxplot(SES_tl_2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_tl_2, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(ntl_2), main = "Distribution of expected values - Tongue Length")
+abline(v = cwm.obs.m[,6], col = "blue", lwd = 2)
+
+pval.tl_2 <- apply(cbind(cwm.obs$tl_2, ntl_2), MARGIN = 1, rank)[1,] / 1000
+pval.tl_2
+tl_2 <- cbind(cwm.obs$tl_2, ntl_2)
+tl_2.m <- as.matrix(t(colMeans(tl_2)))
+pval.tl_2.a <- apply(tl_2.m, MARGIN = 1, rank)[1,] / 1000
+pval.tl_2.a
+
+w.tl_2 <- wilcox.test(SES_tl_2, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl_2
+
+
+## nest location - below ground
+SES_nest0 <- (cwm.obs$nestl_0 - apply(nnestl_0, MARGIN = 1, mean)) / apply(nnestl_0, MARGIN = 1, sd, na.rm=T)
+SES_nest0
+
+boxplot(SES_nest0)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_nest0, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nnestl_0), main = "Distribution of expected values - Belowground Nest Location")
+abline(v = cwm.obs.m[,7], col = "blue", lwd = 2)
+
+pval.nest0 <- apply(cbind(cwm.obs$nestl_0, nnestl_0), MARGIN = 1, rank)[1,] / 1000
+pval.nest0
+nest0 <- cbind(cwm.obs$nestl_0, nnestl_0)
+nest0.m <- as.matrix(t(colMeans(nest0)))
+pval.nest0.a <- apply(nest0.m, MARGIN = 1, rank)[1,] / 1000
+pval.nest0.a
+
+w.nest0 <- wilcox.test(SES_nest0, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.nest0
+
+
+## nest location - mixed - kleptoparasitic
+SES_nest1 <- (cwm.obs$nestl_1 - apply(nnestl_1, MARGIN = 1, mean)) / apply(nnestl_1, MARGIN = 1, sd, na.rm=T)
+SES_nest1
+
+boxplot(SES_nest1) #zero not on the y scale!
+boxplot(SES_nest1, ylim=c(-1.5, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_nest1, pch = 19, cex = 1.5, ylim=c(-1.5, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nnestl_1), main = "Distribution of expected values - Kleptoparasitic Species")
+abline(v = cwm.obs.m[,8], col = "blue", lwd = 2)
+
+pval.nest1 <- apply(cbind(cwm.obs$nestl_1, nnestl_1), MARGIN = 1, rank)[1,] / 1000
+pval.nest1
+nest1 <- cbind(cwm.obs$nestl_1, nnestl_1)
+nest1.m <- as.matrix(t(colMeans(nest1)))
+pval.nest1.a <- apply(nest1.m, MARGIN = 1, rank)[1,] / 1000
+pval.nest1.a
+
+w.nest1 <- wilcox.test(SES_nest1, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.nest1
+
+
+## nest location - above ground
+SES_nest2 <- (cwm.obs$nestl_2 - apply(nnestl_2, MARGIN = 1, mean)) / apply(nnestl_2, MARGIN = 1, sd, na.rm=T)
+SES_nest2
+
+boxplot(SES_nest2)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_nest2, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nnestl_2), main = "Distribution of expected values - Aboveground Nest Location")
+abline(v = cwm.obs.m[,9], col = "blue", lwd = 2)
+
+pval.nest2 <- apply(cbind(cwm.obs$nestl_2, nnestl_2), MARGIN = 1, rank)[1,] / 1000
+pval.nest2
+nest2 <- cbind(cwm.obs$nestl_2, nnestl_2)
+nest2.m <- as.matrix(t(colMeans(nest2)))
+pval.nest2.a <- apply(nest2.m, MARGIN = 1, rank)[1,] / 1000
+pval.nest2.a
+
+w.nest2 <- wilcox.test(SES_nest2, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.nest2
+
+
+## intertegular distance
+SES_it <- (cwm.obs$it - apply(nit, MARGIN = 1, mean)) / apply(nit, MARGIN = 1, sd, na.rm=T)
+SES_it
+
+boxplot(SES_it)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_it, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nit), main = "Distribution of expected values - Intertegular Distance")
+abline(v = cwm.obs.m[,10], col = "blue", lwd = 2)
+
+pval.it <- apply(cbind(cwm.obs$it, nit), MARGIN = 1, rank)[1,] / 1000
+pval.it
+it <- cbind(cwm.obs$it, nit)
+it.m <- as.matrix(t(colMeans(it)))
+pval.it.a <- apply(it.m, MARGIN = 1, rank)[1,] / 1000
+pval.it.a
+
+w.it <- wilcox.test(SES_it, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.it
+
+
+## wing length
+SES_wingl <- (cwm.obs$rwingl - apply(nwingl, MARGIN = 1, mean)) / apply(nwingl, MARGIN = 1, sd, na.rm=T)
+SES_wingl
+
+boxplot(SES_wingl)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_wingl, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nwingl), main = "Distribution of expected values - Wing Length")
+abline(v = cwm.obs.m[,11], col = "blue", lwd = 2)
+
+pval.wingl <- apply(cbind(cwm.obs$rwingl, nwingl), MARGIN = 1, rank)[1,] / 1000
+pval.wingl
+wingl <- cbind(cwm.obs$rwingl, nwingl)
+wingl.m <- as.matrix(t(colMeans(wingl)))
+pval.wingl.a <- apply(wingl.m, MARGIN = 1, rank)[1,] / 1000
+pval.wingl.a
+
+w.wingl <- wilcox.test(SES_wingl, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.wingl
+
+
+## head width
+SES_headw <- (cwm.obs$rheadw - apply(nheadw, MARGIN = 1, mean)) / apply(nheadw, MARGIN = 1, sd, na.rm=T)
+SES_headw
+
+boxplot(SES_headw)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_headw, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nheadw), main = "Distribution of expected values - Head Width")
+abline(v = cwm.obs.m[,12], col = "blue", lwd = 2)
+
+pval.headw <- apply(cbind(cwm.obs$rheadw, nheadw), MARGIN = 1, rank)[1,] / 1000
+pval.headw
+headw <- cbind(cwm.obs$rheadw, nheadw)
+headw.m <- as.matrix(t(colMeans(headw)))
+pval.headw.a <- apply(headw.m, MARGIN = 1, rank)[1,] / 1000
+pval.headw.a
+
+w.headw <- wilcox.test(SES_headw, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.headw
+
+
+## eye length
+SES_eyel <- (cwm.obs$reyel - apply(neyel, MARGIN = 1, mean)) / apply(neyel, MARGIN = 1, sd, na.rm=T)
+SES_eyel
+
+boxplot(SES_eyel)#zero not on the y scale!
+boxplot(SES_eyel, ylim=c(-0.5, 2.0))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_eyel, pch = 19, cex = 1.5)
+plot(SES_eyel, pch = 19, cex = 1.5, ylim=c(-0.5, 2.0))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(neyel), main = "Distribution of expected values - Eye Length")
+abline(v = cwm.obs.m[,13], col = "blue", lwd = 2)
+
+pval.eyel <- apply(cbind(cwm.obs$reyel, neyel), MARGIN = 1, rank)[1,] / 1000
+pval.eyel
+eyel <- cbind(cwm.obs$reyel, neyel)
+eyel.m <- as.matrix(t(colMeans(eyel)))
+pval.eyel.a <- apply(eyel.m, MARGIN = 1, rank)[1,] / 1000
+pval.eyel.a
+
+w.eyel <- wilcox.test(SES_eyel, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.eyel
+
+
+## thorax hair length
+SES_thairl <- (cwm.obs$thairl - apply(nthairl, MARGIN = 1, mean)) / apply(nthairl, MARGIN = 1, sd, na.rm=T)
+SES_thairl
+
+boxplot(SES_thairl)#zero not on the y scale!
+boxplot(SES_thairl, ylim=c(-2.0, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_thairl, pch = 19, cex = 1.5)
+plot(SES_thairl, pch = 19, cex = 1.5, ylim=c(-2.0, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nthairl), main = "Distribution of expected values - Thorax Hair Length")
+abline(v = cwm.obs.m[,14], col = "blue", lwd = 2)
+
+pval.thairl <- apply(cbind(cwm.obs$thairl, nthairl), MARGIN = 1, rank)[1,] / 1000
+pval.thairl
+thairl <- cbind(cwm.obs$thairl, nthairl)
+thairl.m <- as.matrix(t(colMeans(thairl)))
+pval.thairl.a <- apply(thairl.m, MARGIN = 1, rank)[1,] / 1000
+pval.thairl.a
+
+w.thairl <- wilcox.test(SES_thairl, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.thairl
+
+
+## corbicula setae length
+SES_setael <- (cwm.obs$bsetael - apply(nbsetael, MARGIN = 1, mean)) / apply(nbsetael, MARGIN = 1, sd, na.rm=T)
+SES_setael
+
+boxplot(SES_setael)#zero not on the y scale!
+boxplot(SES_setael, ylim=c(-0.5, 1.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_setael, pch = 19, cex = 1.5)
+plot(SES_setael, pch = 19, cex = 1.5, ylim=c(-0.5, 1.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nbsetael), main = "Distribution of expected values - Corbicula Setae Length")
+abline(v = cwm.obs.m[,15], col = "blue", lwd = 2)
+
+pval.setael <- apply(cbind(cwm.obs$bsetael, nbsetael), MARGIN = 1, rank)[1,] / 1000
+pval.setael
+setael <- cbind(cwm.obs$bsetael, nbsetael)
+setael.m <- as.matrix(t(colMeans(setael)))
+pval.setael.a <- apply(setael.m, MARGIN = 1, rank)[1,] / 1000
+pval.setael.a
+
+w.setael <- wilcox.test(SES_setael, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.setael
+
+
+## corbicula length
+SES_tibial <- (cwm.obs$rbtl - apply(nbtl, MARGIN = 1, mean)) / apply(nbtl, MARGIN = 1, sd, na.rm=T)
+SES_tibial
+
+boxplot(SES_tibial)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_tibial, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nbtl), main = "Distribution of expected values - Corbicula Length")
+abline(v = cwm.obs.m[,16], col = "blue", lwd = 2)
+
+pval.tibial <- apply(cbind(cwm.obs$rbtl, nbtl), MARGIN = 1, rank)[1,] / 1000
+pval.tibial
+tibial <- cbind(cwm.obs$rbtl, nbtl)
+tibial.m <- as.matrix(t(colMeans(tibial)))
+pval.tibial.a <- apply(tibial.m, MARGIN = 1, rank)[1,] / 1000
+pval.tibial.a
+
+w.tibial <- wilcox.test(SES_tibial, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tibial
+
+
+## Diversity Indices ##
+
+#Taxonomic diversity
+
+beta.sor <- as.matrix(bb.dist$beta.sor)
+beta.sor <- colMeans(beta.sor)
+
+beta.sim <- as.matrix(bb.dist$beta.sim)
+beta.sim <- colMeans(beta.sim)
+
+beta.sne <- as.matrix(bb.dist$beta.sne)
+beta.sne <- colMeans(beta.sne)
+
+beta.t <- data.frame(beta.sor, beta.sim, beta.sne)
+beta.t.m <- as.matrix(t(colMeans(beta.t)))
+
+## taxonomic diversity - beta sor
+SES_bsor <- (beta.t$beta.sor - apply(nbsor, MARGIN = 1, mean)) / apply(nbsor, MARGIN = 1, sd, na.rm=T)
+SES_bsor
+
+boxplot(SES_bsor)
+boxplot(SES_bsor, ylim=c(-14, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_bsor, pch = 19, cex = 1.5, ylim=c(-14, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nbsor), main = "Distribution of expected values - Taxonomic Beta-Diversity", xlim=c(0.1, 1))
+abline(v = beta.t.m[,1], col = "blue", lwd = 2)
+
+pval.beta.sor <- apply(cbind(beta.t$beta.sor, nbsor), MARGIN = 1, rank)[1,] / 1000
+pval.beta.sor
+tbsor <- cbind(beta.t$beta.sor, nbsor)
+tbsor.m <- as.matrix(t(colMeans(tbsor)))
+pval.beta.sor.a <- apply(tbsor.m, MARGIN = 1, rank)[1,] / 1000
+pval.beta.sor.a
+
+w.bsor <- wilcox.test(SES_bsor, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsor
+
+
+## taxonomic diversity - beta sim
+SES_bsim <- (beta.t$beta.sim - apply(nbsim, MARGIN = 1, mean)) / apply(nbsim, MARGIN = 1, sd, na.rm=T)
+SES_bsim
+
+boxplot(SES_bsim)
+boxplot(SES_bsim, ylim=c(-14, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_bsim, pch = 19, cex = 1.5, ylim=c(-14, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nbsim), main = "Distribution of expected values - Taxonomic Beta-Diversity - Turnover", xlim=c(0.01, 1))
+abline(v = beta.t.m[,2], col = "blue", lwd = 2)
+
+pval.beta.sim <- apply(cbind(beta.t$beta.sim, nbsim), MARGIN = 1, rank)[1,] / 1000
+pval.beta.sim
+tbsim <- cbind(beta.t$beta.sim, nbsim)
+tbsim.m <- as.matrix(t(colMeans(tbsim)))
+pval.beta.sim.a <- apply(tbsim.m, MARGIN = 1, rank)[1,] / 1000
+pval.beta.sim.a
+
+w.bsim <- wilcox.test(SES_bsim, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsim
+
+## taxonomic diversity - beta sne
+SES_bsne <- (beta.t$beta.sne - apply(nbsne, MARGIN = 1, mean)) / apply(nbsne, MARGIN = 1, sd, na.rm=T)
+SES_bsne
+
+boxplot(SES_bsne)
+boxplot(SES_bsne, ylim=c(-0.5, 11))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_bsne, pch = 19, cex = 1.5, ylim=c(-0.5, 11))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nbsne), main = "Distribution of expected values - Taxonomic Beta-Diversity - Nestedness")
+abline(v = beta.t.m[,3], col = "blue", lwd = 2)
+
+pval.beta.sne <- apply(cbind(beta.t$beta.sne, nbsne), MARGIN = 1, rank)[1,] / 1000
+pval.beta.sne
+tbsne <- cbind(beta.t$beta.sne, nbsne)
+tbsne.m <- as.matrix(t(colMeans(tbsne)))
+pval.beta.sne.a <- apply(tbsne.m, MARGIN = 1, rank)[1,] / 1000
+pval.beta.sne.a
+
+w.bsne <- wilcox.test(SES_bsne, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsne
+
+# Functional Diversity
+fbeta.sor <- as.matrix(bb.fun$funct.beta.sor)
+fbeta.sor <- colMeans(fbeta.sor)
+
+fbeta.sim <- as.matrix(bb.fun$funct.beta.sim)
+fbeta.sim <- colMeans(fbeta.sim)
+
+fbeta.sne <- as.matrix(bb.fun$funct.beta.sne)
+fbeta.sne <- colMeans(fbeta.sne)
+
+beta.f <- data.frame(fbeta.sor, fbeta.sim, fbeta.sne)
+beta.f.m <- as.matrix(t(colMeans(beta.f)))
+
+## functional diversity - beta sor
+SES_fbsor <- (beta.f$fbeta.sor - apply(nfsor, MARGIN = 1, mean)) / apply(nfsor, MARGIN = 1, sd, na.rm=T)
+SES_fbsor
+
+boxplot(SES_fbsor, ylim = c(-5, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_fbsor, pch = 19, cex = 1.5, ylim = c(-5, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nfsor), main = "Distribution of expected values - Functional Beta-Diversity", xlim = c(0.1, 1))
+abline(v = beta.f.m[,1], col = "blue", lwd = 2)
+
+pval.fbeta.sor <- apply(cbind(beta.f$fbeta.sor, nfsor), MARGIN = 1, rank)[1,] / 1000
+pval.fbeta.sor
+fbsor <- cbind(beta.f$fbeta.sor, nfsor)
+fbsor.m <- as.matrix(t(colMeans(fbsor)))
+pval.fbeta.sor.a <- apply(fbsor.m, MARGIN = 1, rank)[1,] / 1000
+pval.fbeta.sor.a
+
+w.fbsor <- wilcox.test(SES_fbsor, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsor
+
+## functional diversity - beta sim
+SES_fbsim <- (beta.f$fbeta.sim - apply(nfsim, MARGIN = 1, mean)) / apply(nfsim, MARGIN = 1, sd, na.rm=T)
+SES_fbsim
+
+boxplot(SES_fbsim)
+boxplot(SES_fbsim, ylim = c(-3, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_fbsim, pch = 19, cex = 1.5, ylim = c(-3, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nfsim), main = "Distribution of expected values - Functional Beta-Diversity - Turnover", xlim = c(0.01, 1))
+abline(v = beta.f.m[,2], col = "blue", lwd = 2)
+
+pval.fbeta.sim <- apply(cbind(beta.f$fbeta.sim, nfsim), MARGIN = 1, rank)[1,] / 1000
+pval.fbeta.sim
+fbsim <- cbind(beta.f$fbeta.sim, nfsim)
+fbsim.m <- as.matrix(t(colMeans(fbsim)))
+pval.fbeta.sim.a <- apply(fbsim.m, MARGIN = 1, rank)[1,] / 1000
+pval.fbeta.sim.a
+
+w.fbsim <- wilcox.test(SES_fbsim, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsim
+
+
+## functional diversity - beta sne
+SES_fbsne <- (beta.f$fbeta.sne - apply(nfsne, MARGIN = 1, mean)) / apply(nfsne, MARGIN = 1, sd, na.rm=T)
+SES_fbsne
+
+boxplot(SES_fbsne)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_fbsne, pch = 19, cex = 1.5)
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(nfsne), main = "Distribution of expected values - Functional Beta-Diversity - Nestedness")
+abline(v = beta.f.m[,3], col = "blue", lwd = 2)
+
+pval.fbeta.sne <- apply(cbind(beta.f$fbeta.sne, nfsne), MARGIN = 1, rank)[1,] / 1000
+pval.fbeta.sne
+fbsne <- cbind(beta.f$fbeta.sne, nfsne)
+fbsne.m <- as.matrix(t(colMeans(fbsne)))
+pval.fbeta.sne.a <- apply(fbsne.m, MARGIN = 1, rank)[1,] / 1000
+pval.fbeta.sne.a
+
+w.fbsne <- wilcox.test(SES_fbsne, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsne
+
+
+# Phylogenetic Diversity
+pbeta.sor <- as.matrix(bb.phy$phylo.beta.sor)
+pbeta.sor <- colMeans(pbeta.sor)
+
+pbeta.sim <- as.matrix(bb.phy$phylo.beta.sim)
+pbeta.sim <- colMeans(pbeta.sim)
+
+pbeta.sne <- as.matrix(bb.phy$phylo.beta.sne)
+pbeta.sne <- colMeans(pbeta.sne)
+
+beta.p <- data.frame(pbeta.sor, pbeta.sim, pbeta.sne)
+beta.p.m <- as.matrix(t(colMeans(beta.p)))
+
+
+## phylogenetic diversity - beta sor
+SES_pbsor <- (beta.p$pbeta.sor - apply(npsor, MARGIN = 1, mean)) / apply(npsor, MARGIN = 1, sd, na.rm=T)
+SES_pbsor
+
+boxplot(SES_pbsor, ylim = c(-8, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_pbsor, pch = 19, cex = 1.5, ylim = c(-8, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(npsor), main = "Distribution of expected values - Phylogenetic Beta-Diversity", xlim = c(0.1, 1))
+abline(v = beta.p.m[,1], col = "blue", lwd = 2)
+
+pval.pbeta.sor <- apply(cbind(beta.p$pbeta.sor, npsor), MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sor
+pbsor <- cbind(beta.p$pbeta.sor, npsor)
+pbsor.m <- as.matrix(t(colMeans(pbsor)))
+pval.pbeta.sor.a <- apply(pbsor.m, MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sor.a
+
+w.pbsor <- wilcox.test(SES_pbsor, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsor
+
+## phylogenetic diversity - beta sim
+SES_pbsim <- (beta.p$pbeta.sim - apply(npsim, MARGIN = 1, mean)) / apply(npsim, MARGIN = 1, sd, na.rm=T)
+SES_pbsim
+
+boxplot(SES_pbsim)
+boxplot(SES_pbsim, ylim = c(-8, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_pbsim, pch = 19, cex = 1.5, ylim = c(-8, 0.5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(npsim), main = "Distribution of expected values - Phylogenetic Beta-Diversity - Turnover", xlim = c(0.01, 1))
+abline(v = beta.p.m[,2], col = "blue", lwd = 2)
+
+pval.pbeta.sim <- apply(cbind(beta.p$pbeta.sim, npsim), MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sim
+pbsim <- cbind(beta.p$pbeta.sim, npsim)
+pbsim.m <- as.matrix(t(colMeans(pbsim)))
+pval.pbeta.sim.a <- apply(pbsim.m, MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sim.a
+
+w.pbsim <- wilcox.test(SES_pbsim, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsim
+
+## phylogenetic diversity - beta sne
+SES_pbsne <- (beta.p$pbeta.sne - apply(npsne, MARGIN = 1, mean)) / apply(npsne, MARGIN = 1, sd, na.rm=T)
+SES_pbsne
+
+boxplot(SES_pbsne)
+boxplot(SES_pbsne, ylim = c(-0.5, 5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+plot(SES_pbsne, pch = 19, cex = 1.5, ylim = c(-0.5, 5))
+abline(h = 0.0, col = "black", lwd = 3, lty=2)
+
+hist(as.matrix(npsne), main = "Distribution of expected values - Phylogenetic Beta-Diversity - Nestedness")
+abline(v = beta.p.m[,3], col = "blue", lwd = 2)
+
+pval.pbeta.sne <- apply(cbind(beta.p$pbeta.sne, npsne), MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sne
+pbsne <- cbind(beta.p$pbeta.sne, npsne)
+pbsne.m <- as.matrix(t(colMeans(pbsne)))
+pval.pbeta.sne.a <- apply(pbsne.m, MARGIN = 1, rank)[1,] / 1000
+pval.pbeta.sne.a
+
+w.pbsne <- wilcox.test(SES_pbsne, y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsne
+
+
+###################################################################################
+####Differences in Overall Observed SES from Null Communities######################
+
+SES <- cbind(SES_qblv, SES_mblv, SES_wblv, SES_tl_0, SES_tl_1, SES_tl_2, SES_nest0, SES_nest1,
+             SES_nest2, SES_it, SES_wingl, SES_headw, SES_eyel, SES_thairl, SES_setael, SES_tibial,
+             SES_bsor, SES_bsim, SES_bsne, SES_fbsor, SES_fbsim, SES_fbsne, SES_pbsor, SES_pbsim, SES_pbsne)
+SES <- as.data.frame(SES)
+str(SES)
+
+
+write.csv(SES, file = "SES_Regional_NoTraitShuffleModel.csv")
+
+# load the dataset
+SES <- read.csv("SES_Regional_NoTraitShuffleModel.csv", row.names=1)
+
+###################################################################################
+##Differences in Observed SES from Null Communities by Treatment###################
+
+### Group by trait categories
+
+library(viridis)
+library(reshape2)
+
+## Body Size Traits ###############################################################
+SES_bl <- as.data.frame(SES[,c(3,2,1,10)])
+colnames(SES_bl) <- c("Worker BL Variance", "Male BL Variance", "Queen BL Variance", "Inter-tegular Distance")
+SES_bl$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                 "A", "U", "U", "A", "A")
+SES_bl$trmt <- as.factor(SES_bl$trmt)
+str(SES_bl)
+
+urban.bl <- SES_bl[which(SES_bl$trmt == "U"),]
+ag.bl <- SES_bl[which(SES_bl$trmt == "A"),]
+
+urban.bl.SES <- melt(urban.bl)
+colnames(urban.bl.SES) <- c("trmt","trait","ses")
+
+ag.bl.SES <- melt(ag.bl)
+colnames(ag.bl.SES) <- c("trmt","trait","ses")
+
+
+#urban
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = urban.bl.SES, col = viridis(4, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "",
+        horizontal = TRUE, las = 1, range = 0, main = "Urban")
+stripchart(ses ~ trait, data = urban.bl.SES, col = viridis(4),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.wbl_var.u <- wilcox.test(urban.bl[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.wbl_var.u
+
+w.mbl_var.u <- wilcox.test(urban.bl[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.mbl_var.u
+
+w.qbl_var.u <- wilcox.test(urban.bl[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.qbl_var.u
+
+w.it.u <- wilcox.test(urban.bl[,4], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.it.u
+
+#ag
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = ag.bl.SES, col = viridis(4, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "",
+        horizontal = TRUE, las = 1, range = 0, main = "Agriculture")
+stripchart(ses ~ trait, data = ag.bl.SES, col = viridis(4),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.wbl_var.a <- wilcox.test(ag.bl[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.wbl_var.a
+
+w.mbl_var.a <- wilcox.test(ag.bl[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.mbl_var.a
+
+w.qbl_var.a <- wilcox.test(ag.bl[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.qbl_var.a
+
+w.it.a <- wilcox.test(ag.bl[,4], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.it.a
+
+## Tongue Length ###############################################################
+SES_tl <- as.data.frame(SES[,c(6,5,4)])
+colnames(SES_tl) <- c("Long Tongue", "Medium Tongue", "Short Tongue")
+SES_tl$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                 "A", "U", "U", "A", "A")
+SES_tl$trmt <- as.factor(SES_tl$trmt)
+str(SES_tl)
+
+urban.tl <- SES_tl[which(SES_tl$trmt == "U"),]
+ag.tl <- SES_tl[which(SES_tl$trmt == "A"),]
+
+urban.tl.SES <- melt(urban.tl)
+colnames(urban.tl.SES) <- c("trmt","trait","ses")
+
+ag.tl.SES <- melt(ag.tl)
+colnames(ag.tl.SES) <- c("trmt","trait","ses")
+
+
+#urban
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = urban.tl.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "",
+        horizontal = TRUE, las = 1, range = 0, main = "Urban")
+stripchart(ses ~ trait, data = urban.tl.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.tl0.u <- wilcox.test(urban.tl[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl0.u
+
+w.tl1.u <- wilcox.test(urban.tl[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl1.u
+
+w.tl2.u <- wilcox.test(urban.tl[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl2.u
+
+#ag
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = ag.tl.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "",
+        horizontal = TRUE, las = 1, range = 0, main = "Agriculture")
+stripchart(ses ~ trait, data = ag.tl.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.tl0.a <- wilcox.test(ag.tl[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl0.a
+
+w.tl1.a <- wilcox.test(ag.tl[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl1.a
+
+w.tl2.a <- wilcox.test(ag.tl[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tl2.a
+
+
+## Nest Location ###############################################################
+SES_nest <- as.data.frame(SES[,c(8,7,9)])
+colnames(SES_nest) <- c("Kleptoparasitic", "Belowground Nests", "Aboveground Nests")
+SES_nest$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                   "A", "U", "U", "A", "A")
+SES_nest$trmt <- as.factor(SES_nest$trmt)
+str(SES_nest)
+
+urban.nest <- SES_nest[which(SES_nest$trmt == "U"),]
+ag.nest <- SES_nest[which(SES_nest$trmt == "A"),]
+
+urban.nest.SES <- melt(urban.nest)
+colnames(urban.nest.SES) <- c("trmt","trait","ses")
+
+ag.nest.SES <- melt(ag.nest)
+colnames(ag.nest.SES) <- c("trmt","trait","ses")
+
+
+#urban
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = urban.nest.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "",
+        horizontal = TRUE, las = 1, range = 0, main = "Urban")
+stripchart(ses ~ trait, data = urban.nest.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.nest0.u <- wilcox.test(urban.nest[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.nest0.u
+
+w.nest1.u <- wilcox.test(urban.nest[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.nest1.u
+
+w.nest2.u <- wilcox.test(urban.nest[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.nest2.u
+
+#ag
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = ag.nest.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "",
+        horizontal = TRUE, las = 1, range = 0, main = "Agriculture")
+stripchart(ses ~ trait, data = ag.nest.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.nest0.a <- wilcox.test(ag.nest[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.nest0.a
+
+w.nest1.a <- wilcox.test(ag.nest[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.nest1.a
+
+w.nest2.a <- wilcox.test(ag.nest[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.nest2.a
+
+
+## Other Traits ###############################################################
+SES_trait <- as.data.frame(SES[,c(15,16,14,13,12,11)])
+colnames(SES_trait) <- c("Setae Length", "Tibia Length", "Thorax Hair Length", "Eye Length", "Head Width", "Wing Length")
+SES_trait$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_trait$trmt <- as.factor(SES_trait$trmt)
+str(SES_trait)
+
+urban.trait <- SES_trait[which(SES_trait$trmt == "U"),]
+ag.trait <- SES_trait[which(SES_trait$trmt == "A"),]
+
+urban.trait.SES <- melt(urban.trait)
+colnames(urban.trait.SES) <- c("trmt","trait","ses")
+
+ag.trait.SES <- melt(ag.trait)
+colnames(ag.trait.SES) <- c("trmt","trait","ses")
+
+
+#urban
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = urban.trait.SES, col = viridis(6, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2,2),
+        horizontal = TRUE, las = 1, range = 0, main = "Urban")
+stripchart(ses ~ trait, data = urban.trait.SES, col = viridis(6),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.wingl.u <- wilcox.test(urban.trait[,6], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.wingl.u
+
+w.headw.u <- wilcox.test(urban.trait[,5], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.headw.u
+
+w.eyel.u <- wilcox.test(urban.trait[,4], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.eyel.u
+
+w.thairl.u <- wilcox.test(urban.trait[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.thairl.u
+
+w.setael.u <- wilcox.test(urban.trait[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.setael.u
+
+w.tibial.u <- wilcox.test(urban.trait[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tibial.u
+
+#ag
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = ag.trait.SES, col = viridis(6, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-2,2),
+        horizontal = TRUE, las = 1, range = 0, main = "Agriculture")
+stripchart(ses ~ trait, data = ag.trait.SES, col = viridis(6),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.wingl.a <- wilcox.test(ag.trait[,6], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.wingl.a
+
+w.headw.a <- wilcox.test(ag.trait[,5], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.headw.a
+
+w.eyel.a <- wilcox.test(ag.trait[,4], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.eyel.a
+
+w.thairl.a <- wilcox.test(ag.trait[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.thairl.a
+
+w.setael.a <- wilcox.test(ag.trait[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)#
+w.setael.a
+
+w.tibial.a <- wilcox.test(ag.trait[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.tibial.a
+
+
+## Taxonomic Beta-diversity ###############################################################
+SES_tbeta <- as.data.frame(SES[,c(19,18,17)])
+colnames(SES_tbeta) <- c("Nestedness", "Turnover", "Total")
+SES_tbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_tbeta$trmt <- as.factor(SES_tbeta$trmt)
+str(SES_tbeta)
+
+urban.tbeta <- SES_tbeta[which(SES_tbeta$trmt == "U"),]
+ag.tbeta <- SES_tbeta[which(SES_tbeta$trmt == "A"),]
+
+urban.tbeta.SES <- melt(urban.tbeta)
+colnames(urban.tbeta.SES) <- c("trmt","trait","ses")
+
+ag.tbeta.SES <- melt(ag.tbeta)
+colnames(ag.tbeta.SES) <- c("trmt","trait","ses")
+
+
+#urban
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = urban.tbeta.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-15,15),
+        horizontal = TRUE, las = 1, range = 0, main = "Urban")
+stripchart(ses ~ trait, data = urban.tbeta.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.bsor.u <- wilcox.test(urban.tbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsor.u
+
+w.bsim.u <- wilcox.test(urban.tbeta[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsim.u
+
+w.bsne.u <- wilcox.test(urban.tbeta[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsne.u
+
+#ag
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = ag.tbeta.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-15,15),
+        horizontal = TRUE, las = 1, range = 0, main = "Agriculture")
+stripchart(ses ~ trait, data = ag.tbeta.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.bsor.a <- wilcox.test(ag.tbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsor.a
+
+w.bsim.a <- wilcox.test(ag.tbeta[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsim.a
+
+w.bsne.a <- wilcox.test(ag.tbeta[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.bsne.a
+
+
+## Functional Beta-diversity ###############################################################
+SES_fbeta <- as.data.frame(SES[,c(22,21,20)])
+colnames(SES_fbeta) <- c("Nestedness", "Turnover", "Total")
+SES_fbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_fbeta$trmt <- as.factor(SES_fbeta$trmt)
+str(SES_fbeta)
+
+urban.fbeta <- SES_fbeta[which(SES_fbeta$trmt == "U"),]
+ag.fbeta <- SES_fbeta[which(SES_fbeta$trmt == "A"),]
+
+urban.fbeta.SES <- melt(urban.fbeta)
+colnames(urban.fbeta.SES) <- c("trmt","trait","ses")
+
+ag.fbeta.SES <- melt(ag.fbeta)
+colnames(ag.fbeta.SES) <- c("trmt","trait","ses")
+
+
+#urban
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = urban.fbeta.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-6, 6),
+        horizontal = TRUE, las = 1, range = 0, main = "Urban")
+stripchart(ses ~ trait, data = urban.fbeta.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.fbsor.u <- wilcox.test(urban.fbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsor.u
+
+w.fbsim.u <- wilcox.test(urban.fbeta[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsim.u
+
+w.fbsne.u <- wilcox.test(urban.fbeta[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsne.u
+
+#ag
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = ag.fbeta.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-6, 6),
+        horizontal = TRUE, las = 1, range = 0, main = "Agriculture")
+stripchart(ses ~ trait, data = ag.fbeta.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.fbsor.a <- wilcox.test(ag.fbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsor.a
+
+w.fbsim.a <- wilcox.test(ag.fbeta[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsim.a
+
+w.fbsne.a <- wilcox.test(ag.fbeta[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.fbsne.a
+
+
+## Phylogenetic Beta-diversity ###############################################################
+SES_pbeta <- as.data.frame(SES[,c(25,24,23)])
+colnames(SES_pbeta) <- c("Nestedness", "Turnover", "Total")
+SES_pbeta$trmt <- c("U", "A", "U", "U", "U", "A", "A", "U", "A", "U", "U", "U", "U", "A", "U",
+                    "A", "U", "U", "A", "A")
+SES_pbeta$trmt <- as.factor(SES_pbeta$trmt)
+str(SES_pbeta)
+
+urban.pbeta <- SES_pbeta[which(SES_pbeta$trmt == "U"),]
+ag.pbeta <- SES_pbeta[which(SES_pbeta$trmt == "A"),]
+
+urban.pbeta.SES <- melt(urban.pbeta)
+colnames(urban.pbeta.SES) <- c("trmt","trait","ses")
+
+ag.pbeta.SES <- melt(ag.pbeta)
+colnames(ag.pbeta.SES) <- c("trmt","trait","ses")
+
+#urban
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = urban.pbeta.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-8, 5),
+        horizontal = TRUE, las = 1, range = 0, main = "Urban")
+stripchart(ses ~ trait, data = urban.pbeta.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.pbsor.u <- wilcox.test(urban.pbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsor.u
+
+w.pbsim.u <- wilcox.test(urban.pbeta[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsim.u
+
+w.pbsne.u <- wilcox.test(urban.pbeta[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsne.u
+
+#ag
+par(mar = c(5,9,4,2))
+boxplot(ses ~ trait, data = ag.pbeta.SES, col = viridis(3, alpha = 0.6),
+        xlab = "Standardized Effect Sizes (SES)", ylab = "", ylim = c(-8, 5),
+        horizontal = TRUE, las = 1, range = 0, main = "Agriculture")
+stripchart(ses ~ trait, data = ag.pbeta.SES, col = viridis(3),
+           pch = 19, cex = 2, las = 1, add = TRUE, method = "jitter", jitter = 0.2)
+abline(v = 0.0, col = "black", lwd = 3, lty=2)
+
+w.pbsor.a <- wilcox.test(ag.pbeta[,3], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsor.a
+
+w.pbsim.a <- wilcox.test(ag.pbeta[,2], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsim.a
+
+w.pbsne.a <- wilcox.test(ag.pbeta[,1], y = NULL, mu = 0, alternative = c("two.sided"), conf.int = TRUE)
+w.pbsne.a
+
+
