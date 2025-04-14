@@ -273,8 +273,7 @@ for(i in 1:numberReps){
   
   # randomize presence/absence matrix
   # independent swap constrains by species richness and frequency
-  #spBB <- randomizeMatrix(samp = a, null.model = "independentswap")
-  spBB <- randomizeMatrix(samp = a, null.model = "richness") # Change in null model from independent swap to richness
+  spBB <- randomizeMatrix(samp = a, null.model = "independentswap")
   print(rownames(ntraits) == colnames(spBB)) 
   
   # randomize trait distance matrix
