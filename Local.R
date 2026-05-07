@@ -24,6 +24,36 @@ a[a > 0] <- 1
 str(a)
 rowSums(a)
 
+# species richness among sites
+library(hillR)
+rich <- hill_taxa(a, q = 0, MARGIN = 1)
+mean(rich)
+se <- sd(rich) / sqrt(length(rich))
+se
+range(rich)
+
+trmt <- c("Urban", "Agriculture", "Urban", "Urban", "Urban", "Agriculture", "Agriculture",
+              "Urban", "Agriculture", "Urban", "Urban", "Urban", "Urban", "Agriculture", "Urban",
+              "Agriculture", "Urban", "Urban", "Agriculture", "Agriculture")
+
+sp.rich <- cbind(trmt, rich)
+sp.rich <- as.data.frame(sp.rich)
+sp.rich$trmt <- as.factor(sp.rich$trmt)
+sp.rich$rich <- as.integer(sp.rich$rich)
+str(sp.rich)
+
+ag.rich <- sp.rich[which(sp.rich$trmt == "Agriculture"),]
+str(ag.rich)
+mean(ag.rich$rich)
+sd(ag.rich$rich) / sqrt(length(ag.rich$rich))
+range(ag.rich$rich)
+
+urban.rich <- sp.rich[which(sp.rich$trmt == "Urban"),]
+str(urban.rich)
+mean(urban.rich$rich)
+sd(urban.rich$rich) / sqrt(length(urban.rich$rich))
+range(urban.rich$rich)
+
 # create a vector with the column sums for each species
 # species not collected in Madison will have a 0
 sp <- colSums(a)
