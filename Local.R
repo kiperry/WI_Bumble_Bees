@@ -11,7 +11,6 @@
 # Null Models
 # PLS Analyses
 #
-# KI Perry; 21 December 2021
 #
 ###################################################################################
 
@@ -30,7 +29,7 @@ rowSums(a)
 sp <- colSums(a)
 sp
 
-# removes any columns (i.e. species) that were note collected in Madison
+# removes any columns (i.e. species) that were not collected in Madison
 a <- a[, colSums(a != 0) > 0]
 str(a)
 
