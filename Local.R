@@ -1248,6 +1248,11 @@ SES <- read.csv("SES_Local.csv", row.names=1)
 
 land <- read.csv("./landscape_bytransect.csv", row.names=1)
 str(land)
+summary(land)
+
+sd(land$pland.ur.1500) / sqrt(length(land$pland.ur.1500))
+sd(land$pland.ag.1500) / sqrt(length(land$pland.ag.1500))
+sd(land$pland.nat.1500) / sqrt(length(land$pland.nat.1500))
 
 ## check for correlated variables
 ## pull out variables to include in the analysis
