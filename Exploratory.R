@@ -17,6 +17,8 @@ t2 <- read.csv("./bb_traits_sp.csv")
 t2$species
 table(t2$species)#Number of individuals of each species
 
+summary(t2)
+
 library(viridis)
 
 #####Box plots with data points added
@@ -191,3 +193,4 @@ boxplot(rbtw ~ species, data = t2, col = rainbow(16, alpha = 0.3),
 stripchart(rbtw ~ species, data = t2, col = rainbow(16),
            pch = 19, cex = 2, las = 1, add = TRUE,
            method = "jitter", jitter = 0.2)
+
