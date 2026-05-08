@@ -18,6 +18,9 @@
 t <- read.csv("./bb_rtraits_v3.csv", row.names=1)
 a <- read.csv("./bb_abund_v3.csv", row.names=1)
 
+summary(t)
+summary(a)
+
 str(a)
 #change dataset to presence/absence
 a[a > 0] <- 1
